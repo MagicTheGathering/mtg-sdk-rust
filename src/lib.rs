@@ -23,19 +23,19 @@ pub mod model;
 pub mod prelude {
     pub use api::card::filter::*;
     pub use api::card::filtertypes::*;
-    pub use MtgSdk;
+    pub use MtgClient;
 }
 
 /// The MTG.io SDK, use this to access the various api calls
 #[allow(dead_code)]
-pub struct MtgSdk {
+pub struct MtgClient {
     client: Arc<Client>,
     cards: CardApi,
 }
 
-impl MtgSdk {
+impl MtgClient {
     /// Creates a new MTG.io SDK Struct
-    pub fn new(timeout: u64) -> MtgSdk {
+    pub fn new(timeout: u64) -> MtgClient {
         let client = Arc::new(
             reqwest::Client::builder()
                 .timeout(Duration::from_secs(timeout))
@@ -44,7 +44,7 @@ impl MtgSdk {
         );
         let cards = CardApi::new(Arc::downgrade(&client));
 
-        MtgSdk { client, cards }
+        MtgClient { client, cards }
     }
 
     pub fn cards(&self) -> &CardApi {

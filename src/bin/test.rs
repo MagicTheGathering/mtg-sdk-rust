@@ -1,7 +1,7 @@
-extern crate mtgio_sdk;
+extern crate mtgio_client;
 extern crate serde_json;
 
-use mtgio_sdk::MtgSdk;
+use mtgio_client::MtgClient;
 use serde_json::Error;
 
 fn main() {
@@ -11,7 +11,7 @@ fn main() {
 }
 
 fn try_main() -> Result<(), Error> {
-    let sdk = MtgSdk::new(100);
+    let sdk = MtgClient::new(100);
     let mut get_cards_request = sdk.cards().all();
     get_cards_request.set_page_size(100);
     get_cards_request.set_page(4);

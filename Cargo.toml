@@ -1,7 +1,12 @@
 [package]
-name = "mtgio-sdk"
+name = "mtgio-client"
 version = "0.1.0"
 authors = ["Alexander Wendt <alexwgh1+mtgio@gmail.com>"]
+license = "MIT"
+description = "API bindings for www.magicthegathering.io"
+readme = "README.md"
+keywords = ["mtg", "magic", "gathering", "magic the gathering", "api"]
+categories = ["api-bindings"]
 
 [dependencies]
 reqwest = "0.8"

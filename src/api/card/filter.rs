@@ -20,7 +20,7 @@ impl CardFilterBuilder {
     /// Creates a CardFilter with the specified filter parameters
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder
     ///     .color(CardColor::Red)
@@ -37,7 +37,7 @@ impl CardFilterBuilder {
     /// Create a custom filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.custom("name", "Shock|Mountain")
     ///     .build();
@@ -55,7 +55,7 @@ impl CardFilterBuilder {
     /// Every card that (partially) matches the specified name will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.name("Shock")
     ///     .build();
@@ -73,7 +73,7 @@ impl CardFilterBuilder {
     /// Every card that (partially) matches one of the specified names will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.names(&vec!["Shock", "Mountain"])
     ///     .build();
@@ -92,7 +92,7 @@ impl CardFilterBuilder {
     /// Every card that (partially) matches the specified name will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.name_with_language("Schock", CardLanguage::German)
     ///     .build();
@@ -111,7 +111,7 @@ impl CardFilterBuilder {
     /// Every card that (partially) matches one of the specified names will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.names_with_language(&vec!["Schock", "Gebirge"], CardLanguage::German)
     ///     .build();
@@ -135,7 +135,7 @@ impl CardFilterBuilder {
     /// Every card name that has the specified layout will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.layout(CardLayout::DoubleFaced)
     ///     .build();
@@ -150,7 +150,7 @@ impl CardFilterBuilder {
     /// Every card that has one of the specified layouts will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.layouts(&vec![CardLayout::Normal, CardLayout::DoubleFaced])
     ///     .build();
@@ -166,7 +166,7 @@ impl CardFilterBuilder {
     /// Every card name that has the specified converted mana cost will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.converted_mana_cost(3)
     ///     .build();
@@ -181,7 +181,7 @@ impl CardFilterBuilder {
     /// Every card that has one of the specified converted mana costs will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.converted_mana_costs(&vec![3,5])
     ///     .build();
@@ -197,7 +197,7 @@ impl CardFilterBuilder {
     /// Every card that includes the specified color will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.color(CardColor::Red)
     ///     .build();
@@ -212,7 +212,7 @@ impl CardFilterBuilder {
     /// Every card that includes one the specified colors will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.colors_or(&vec![CardColor::Red, CardColor::Blue])
     ///     .build();
@@ -228,7 +228,7 @@ impl CardFilterBuilder {
     /// Every card that includes all the specified colors will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.colors_and(&vec![CardColor::Red, CardColor::Blue])
     ///     .build();
@@ -244,7 +244,7 @@ impl CardFilterBuilder {
     /// Every card that includes the specified color code will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.color_identity(CardColorIdentity::R)
     ///     .build();
@@ -259,7 +259,7 @@ impl CardFilterBuilder {
     /// Every card that includes one of the specified color codes will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.color_identities_or(&vec![CardColorIdentity::R, CardColorIdentity::U])
     ///     .build();
@@ -281,7 +281,7 @@ impl CardFilterBuilder {
     /// Every card that includes all of the specified color codes will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.color_identities_and(&vec![CardColorIdentity::R, CardColorIdentity::U])
     ///     .build();
@@ -303,7 +303,7 @@ impl CardFilterBuilder {
     /// Every card that (partially) matches the specified type will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.fulltype("Legendary Creature")
     ///     .build();
@@ -321,7 +321,7 @@ impl CardFilterBuilder {
     /// Every card that (partially) matches one of the specified types will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.fulltypes_or(&vec!["Legendary Creature", "Human"])
     ///     .build();
@@ -340,7 +340,7 @@ impl CardFilterBuilder {
     /// Every card that (partially) matches all of the specified types will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.fulltypes_and(&vec!["Legendary", "Creature", "Human"])
     ///     .build();
@@ -359,7 +359,7 @@ impl CardFilterBuilder {
     /// Every card that is of the specified supertype will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.supertype(CardSuperType::Legendary)
     ///     .build();
@@ -374,7 +374,7 @@ impl CardFilterBuilder {
     /// Every card that is one of the specified supertypes will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.supertypes_or(&vec![CardSuperType::Basic, CardSuperType::Legendary])
     ///     .build();
@@ -393,7 +393,7 @@ impl CardFilterBuilder {
     /// Every card that is all of the specified supertypes will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.supertypes_and(&vec![CardSuperType::Basic, CardSuperType::Legendary])
     ///     .build();
@@ -412,7 +412,7 @@ impl CardFilterBuilder {
     /// Every card that is of the specified type will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.cardtype(CardType::Creature)
     ///     .build();
@@ -427,7 +427,7 @@ impl CardFilterBuilder {
     /// Every card that is of one of the specified type will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.cardtypes_or(&vec![CardType::Creature, CardType::Artifact])
     ///     .build();
@@ -446,7 +446,7 @@ impl CardFilterBuilder {
     /// Every card that is of all of the specified type will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.cardtypes_and(&vec![CardType::Creature, CardType::Artifact])
     ///     .build();
@@ -465,7 +465,7 @@ impl CardFilterBuilder {
     /// Every card that is of the specified subtype will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.subtype("Human")
     ///     .build();
@@ -483,7 +483,7 @@ impl CardFilterBuilder {
     /// Every card that is of one of the specified subtypes will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.subtypes_or(&vec!["Human", "Soldier"])
     ///     .build();
@@ -502,7 +502,7 @@ impl CardFilterBuilder {
     /// Every card that is of all of the specified subtypes will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.subtypes_and(&vec!["Human", "Soldier"])
     ///     .build();
@@ -521,7 +521,7 @@ impl CardFilterBuilder {
     /// Every card that is of the specified rarity will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.rarity(CardRarity::Rare)
     ///     .build();
@@ -536,7 +536,7 @@ impl CardFilterBuilder {
     /// Every card that is of one of the specified rarities will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.rarities(&vec![CardRarity::Rare, CardRarity::MythicRare])
     ///     .build();
@@ -555,7 +555,7 @@ impl CardFilterBuilder {
     /// Every card that is in the specified set will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.set("AER")
     ///     .build();
@@ -573,7 +573,7 @@ impl CardFilterBuilder {
     /// Every card that is in one of the specified sets will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.sets(&vec!["AER", "M19"])
     ///     .build();
@@ -592,7 +592,7 @@ impl CardFilterBuilder {
     /// Every card that (partially) matches the specified set name will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.set_name("Core Set 2019")
     ///     .build();
@@ -610,7 +610,7 @@ impl CardFilterBuilder {
     /// Every card that (partially) matches one of the specified set names will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.set_names(&vec!["Core Set 2019", "Aether Revolt"])
     ///     .build();
@@ -629,7 +629,7 @@ impl CardFilterBuilder {
     /// Every card that (partially) matches the specified oracle text will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.text("deals 2 damage")
     ///     .build();
@@ -647,7 +647,7 @@ impl CardFilterBuilder {
     /// Every card that (partially) matches one of the specified oracle texts will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.texts_or(&vec!["deals", "damage"])
     ///     .build();
@@ -666,7 +666,7 @@ impl CardFilterBuilder {
     /// Every card that (partially) matches all of the specified oracle texts will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.texts_and(&vec!["deals", "damage"])
     ///     .build();
@@ -685,7 +685,7 @@ impl CardFilterBuilder {
     /// Every card that (partially) matches the specified flavour text will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.flavor("S.N.E.A.K.")
     ///     .build();
@@ -703,7 +703,7 @@ impl CardFilterBuilder {
     /// Every card that (partially) matches one of the specified flavour texts will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.flavors_or(&vec!["Espionage", "Kidnapping"])
     ///     .build();
@@ -722,7 +722,7 @@ impl CardFilterBuilder {
     /// Every card that (partially) matches all of the specified flavour texts will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.flavors_and(&vec!["Serious", "Nonstop Espionage and Kidnapping"])
     ///     .build();
@@ -741,7 +741,7 @@ impl CardFilterBuilder {
     /// Every card that is drawn by the specified artist will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.artist("Kev Walker")
     ///     .build();
@@ -759,7 +759,7 @@ impl CardFilterBuilder {
     /// Every card that is drawn by one of the specified artists will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.artists(&vec!["Kev Walker", "Pete Venters"])
     ///     .build();
@@ -780,7 +780,7 @@ impl CardFilterBuilder {
     /// The card number may contain letters
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.number("1")
     ///     .build();
@@ -800,7 +800,7 @@ impl CardFilterBuilder {
     /// The card number may contain letters
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.numbers(&vec!["1", "2"])
     ///     .build();
@@ -821,7 +821,7 @@ impl CardFilterBuilder {
     /// Some cards have powers like: “1+*”
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.power("1")
     ///     .build();
@@ -841,7 +841,7 @@ impl CardFilterBuilder {
     /// Some cards have powers like: “1+*”
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.powers(&vec!["1", "2"])
     ///     .build();
@@ -862,7 +862,7 @@ impl CardFilterBuilder {
     /// Some cards have toughness like: “1+*”
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.toughness("1")
     ///     .build();
@@ -882,7 +882,7 @@ impl CardFilterBuilder {
     /// Some cards have toughnesses like: “1+*”
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.toughnesses(&vec!["1", "2"])
     ///     .build();
@@ -903,7 +903,7 @@ impl CardFilterBuilder {
     /// This is only present for planeswalkers
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.loyality("3")
     ///     .build();
@@ -923,7 +923,7 @@ impl CardFilterBuilder {
     /// This is only present for planeswalkers
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.loyalities(&vec!["3", "5"])
     ///     .build();
@@ -942,7 +942,7 @@ impl CardFilterBuilder {
     /// Every card that is legal in the specified game format will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.game_format(GameFormat::Standard)
     ///     .build();
@@ -957,7 +957,7 @@ impl CardFilterBuilder {
     /// Every card that is legal in the specified game formats will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.game_format(GameFormat::Standard)
     ///     .build();
@@ -973,7 +973,7 @@ impl CardFilterBuilder {
     /// Every card that is of the specified legality in the specified game format will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.game_format_with_legality(GameFormat::Commander, CardLegality::Banned)
     ///     .build();
@@ -993,7 +993,7 @@ impl CardFilterBuilder {
     /// Every card that is of the specified legality in the specified game formats will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.game_formats_with_legality(&vec![GameFormat::Standard, GameFormat::Commander], CardLegality::Banned)
     ///     .build();
@@ -1026,7 +1026,7 @@ impl CardFilterBuilder {
     /// This is only present for planeswalkers
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.multiverse_id("409741")
     ///     .build();
@@ -1046,7 +1046,7 @@ impl CardFilterBuilder {
     /// This is only present for planeswalkers
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.multiverse_ids(&vec!["409741", "409742"])
     ///     .build();
@@ -1065,7 +1065,7 @@ impl CardFilterBuilder {
     /// Every card that contains the specified field in the response will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.contains_field(CardResponseField::ImageUrl)
     ///     .build();
@@ -1080,7 +1080,7 @@ impl CardFilterBuilder {
     /// Every card that contains one of the specified fields in the response will match the filter
     ///
     /// ```
-    /// # use mtgio_sdk::prelude::*;
+    /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.contains_fields(&vec![CardResponseField::ImageUrl, CardResponseField::MultiverseId])
     ///     .build();

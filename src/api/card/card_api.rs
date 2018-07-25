@@ -11,7 +11,6 @@ use model::card::CardDetail;
 use model::card::CardDto;
 use model::card::CardsDto;
 use std::sync::Weak;
-use std::fmt::Display;
 
 header! { (PageSizeHeader, "Page-Size") => [u32] }
 header! { (CountHeader, "Count") => [u32] }
@@ -111,16 +110,30 @@ impl AllCardsRequest {
     /// Repeated calls to this method will return the different pages of the cards API
 
     /// ```no_run
-    /// # use mtgio_sdk::prelude::*;
-    /// let sdk = MtgSdk::new(60);
+    /// # use std::error::Error;
+    /// # use mtgio_client::prelude::*;
+    /// # fn try_main() -> Result<(), Box<Error>> {
+    /// let sdk = MtgClient::new(60);
     /// let mut get_cards_request = sdk.cards().all();
     /// let mut cards = Vec::new();
     /// loop {
-    ///     let response = get_cards_request.next_page().unwrap();
+    ///     let response = get_cards_request.next_page()?;
     ///     if response.cards.len() == 0 {break}
     ///     cards.extend(response.cards);
     /// }
+    /// #
+    /// # Ok(())
+    /// # }
+    /// #
+    /// # fn main() {
+    /// #     try_main().unwrap();
+    /// # }
     /// ```
+    /// # Errors
+    ///
+    /// If this function can't connect to the API or does not manage
+    /// to read the response, it will return an error.
+    ///
     #[allow(dead_code)]
     pub fn next_page(&mut self) -> Result<AllCardsResponse, Error> {
         let url = self.create_filtered_url();
