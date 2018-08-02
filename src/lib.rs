@@ -25,6 +25,7 @@ pub mod model;
 pub mod prelude {
     pub use api::card::filter::*;
     pub use api::card::filtertypes::*;
+    pub use api::set::filter::*;
     pub use MtgClient;
 }
 

@@ -25,7 +25,7 @@ impl SetFilterBuilder {
     ///     .name("Khans of Tarkir")
     ///     .block("Khans of Tarkir")
     ///     .build();
-    /// assert!(filter == SetFilter("colors=Red&cmc=2&types=Instant".to_string()))
+    /// assert!(filter == SetFilter("name=Khans of Tarkir&block=Khans of Tarkir".to_string()))
     /// ```
     #[allow(dead_code)]
     pub fn build(self) -> SetFilter {
@@ -47,6 +47,42 @@ impl SetFilterBuilder {
             T: Into<&'a str>,
     {
         self.add_filter(key.into(), value.into());
+        self
+    }
+
+    /// Every set that (partially) matches the specified name will match the filter
+    ///
+    /// ```
+    /// # use mtgio_client::prelude::*;
+    /// let builder = SetFilter::builder();
+    /// let filter = builder.name("Shock")
+    ///     .build();
+    /// assert!(filter == SetFilter("name=Shock".to_string()))
+    /// ```
+    #[allow(dead_code)]
+    pub fn name<'a, T>(mut self, name: T) -> SetFilterBuilder
+        where
+            T: Into<&'a str>,
+    {
+        self.add_filter("name", name.into());
+        self
+    }
+
+    /// Every set that (partially) matches the specified block will match the filter
+    ///
+    /// ```
+    /// # use mtgio_client::prelude::*;
+    /// let builder = SetFilter::builder();
+    /// let filter = builder.block("Shock")
+    ///     .build();
+    /// assert!(filter == SetFilter("block=Shock".to_string()))
+    /// ```
+    #[allow(dead_code)]
+    pub fn block<'a, T>(mut self, block: T) -> SetFilterBuilder
+        where
+            T: Into<&'a str>,
+    {
+        self.add_filter("block", block.into());
         self
     }
 
