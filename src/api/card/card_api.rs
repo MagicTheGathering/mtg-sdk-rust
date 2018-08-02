@@ -12,13 +12,13 @@ use model::card::CardDto;
 use model::card::CardsDto;
 use std::sync::Weak;
 
+use API_URL;
+
 header! { (PageSizeHeader, "Page-Size") => [u32] }
 header! { (CountHeader, "Count") => [u32] }
 header! { (TotalCountHeader, "Total-Count") => [u32] }
 header! { (RatelimitLimitHeader, "Ratelimit-Limit") => [u32] }
 header! { (RatelimitRemainingHeader, "Ratelimit-Remaining") => [u32] }
-
-const API_URL: &str = "https://api.magicthegathering.io/v1";
 
 ///Responsible for the calls to the /cards endpoint
 pub struct CardApi {

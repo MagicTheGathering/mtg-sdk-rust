@@ -150,7 +150,7 @@ impl CardSuperType {
     }
 }
 
-/// Available card types for the card type filter
+/// Available card types for the card types filter
 #[allow(dead_code)]
 #[derive(Copy, Clone, Eq, PartialEq, Debug)]
 pub enum CardType {
@@ -365,7 +365,7 @@ impl CardResponseField {
     pub fn as_str(self) -> &'static str {
         use self::CardResponseField::*;
         match self {
-            Type => "type",
+            Type => "types",
             ColorIdentity => "colorIdentity",
             ManaCost => "manaCost",
             SetName => "setName",

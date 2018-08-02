@@ -12,7 +12,7 @@ use model::set::SetDto;
 use model::card::CardsDto;
 use model::card::CardDetail;
 
-const API_URL: &str = "https://api.magicthegathering.io/v1";
+use API_URL;
 
 ///Responsible for the calls to the /cards endpoint
 pub struct SetApi {
@@ -24,7 +24,7 @@ impl SetApi {
         SetApi { client }
     }
 
-    /// Returns a Request Object to fetch all cards
+    /// Returns all Sets
     #[allow(dead_code)]
     pub fn all(&self) -> Result<Vec<SetDetail>, Error> {
         let all_url = [API_URL, "/sets"].join("");
@@ -45,7 +45,7 @@ impl SetApi {
             .sets)
     }
 
-    /// Returns a Request Object to fetch all cards with a filter
+    /// Returns all sets matching the supplied filter
     #[allow(dead_code)]
     pub fn all_filtered(&self, filter: SetFilter) -> Result<Vec<SetDetail>, Error> {
         let all_url = SetApi::create_filtered_url(&filter);
@@ -64,15 +64,6 @@ impl SetApi {
         Ok(serde_json::from_str::<SetsDto>(&body)
             .context(MtgIoErrorKind::SetBodyParseError)?
             .sets)
-    }
-
-    fn create_filtered_url(filter: &SetFilter) -> String {
-        let url = [API_URL, "/sets"].join("");
-        if filter.0.is_empty() {
-            url
-        } else {
-            [url, filter.0.clone()].join("?")
-        }
     }
 
     /// Returns the specified set by the set code
@@ -126,5 +117,14 @@ impl SetApi {
                 .context(MtgIoErrorKind::SetBodyParseError)?
                 .cards
         )
+    }
+
+    fn create_filtered_url(filter: &SetFilter) -> String {
+        let url = [API_URL, "/sets"].join("");
+        if filter.0.is_empty() {
+            url
+        } else {
+            [url, filter.0.clone()].join("?")
+        }
     }
 }

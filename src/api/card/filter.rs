@@ -300,21 +300,21 @@ impl CardFilterBuilder {
         self
     }
 
-    /// Every card that (partially) matches the specified type will match the filter
+    /// Every card that (partially) matches the specified types will match the filter
     ///
     /// ```
     /// # use mtgio_client::prelude::*;
     /// let builder = CardFilter::builder();
     /// let filter = builder.fulltype("Legendary Creature")
     ///     .build();
-    /// assert!(filter == CardFilter("type=Legendary Creature".to_string()));
+    /// assert!(filter == CardFilter("types=Legendary Creature".to_string()));
     /// ```
     #[allow(dead_code)]
     pub fn fulltype<'a, T>(mut self, fulltype: T) -> CardFilterBuilder
     where
         T: Into<&'a str>,
     {
-        self.add_filter("type", &fulltype.into());
+        self.add_filter("types", &fulltype.into());
         self
     }
 
@@ -325,7 +325,7 @@ impl CardFilterBuilder {
     /// let builder = CardFilter::builder();
     /// let filter = builder.fulltypes_or(&vec!["Legendary Creature", "Human"])
     ///     .build();
-    /// assert!(filter == CardFilter("type=Legendary Creature|Human".to_string()));
+    /// assert!(filter == CardFilter("types=Legendary Creature|Human".to_string()));
     /// ```
     #[allow(dead_code)]
     pub fn fulltypes_or<T>(mut self, fulltypes: &[T]) -> CardFilterBuilder
@@ -333,7 +333,7 @@ impl CardFilterBuilder {
         T: Display,
     {
         let values = fulltypes.into_iter().join(SEP_OR);
-        self.add_filter("type", &values);
+        self.add_filter("types", &values);
         self
     }
 
@@ -344,7 +344,7 @@ impl CardFilterBuilder {
     /// let builder = CardFilter::builder();
     /// let filter = builder.fulltypes_and(&vec!["Legendary", "Creature", "Human"])
     ///     .build();
-    /// assert!(filter == CardFilter("type=Legendary,Creature,Human".to_string()));
+    /// assert!(filter == CardFilter("types=Legendary,Creature,Human".to_string()));
     /// ```
     #[allow(dead_code)]
     pub fn fulltypes_and<T>(mut self, fulltypes: &[T]) -> CardFilterBuilder
@@ -352,7 +352,7 @@ impl CardFilterBuilder {
         T: Display,
     {
         let values = fulltypes.into_iter().join(SEP_AND);
-        self.add_filter("type", &values);
+        self.add_filter("types", &values);
         self
     }
 
@@ -409,7 +409,7 @@ impl CardFilterBuilder {
         self
     }
 
-    /// Every card that is of the specified type will match the filter
+    /// Every card that is of the specified types will match the filter
     ///
     /// ```
     /// # use mtgio_client::prelude::*;
@@ -424,7 +424,7 @@ impl CardFilterBuilder {
         self
     }
 
-    /// Every card that is of one of the specified type will match the filter
+    /// Every card that is of one of the specified types will match the filter
     ///
     /// ```
     /// # use mtgio_client::prelude::*;
@@ -443,7 +443,7 @@ impl CardFilterBuilder {
         self
     }
 
-    /// Every card that is of all of the specified type will match the filter
+    /// Every card that is of all of the specified types will match the filter
     ///
     /// ```
     /// # use mtgio_client::prelude::*;

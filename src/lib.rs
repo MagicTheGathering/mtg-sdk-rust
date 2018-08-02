@@ -15,6 +15,9 @@ extern crate chrono;
 pub use api::card::card_api::CardApi as cards;
 use api::card::card_api::CardApi;
 use api::set::set_api::SetApi;
+use api::types::type_api::TypeApi;
+use api::types::type_api::SubtypeApi;
+use api::types::type_api::SupertypeApi;
 use reqwest::Client;
 use std::sync::Arc;
 use std::time::Duration;
@@ -30,12 +33,17 @@ pub mod prelude {
     pub use MtgClient;
 }
 
+const API_URL: &str = "https://api.magicthegathering.io/v1";
+
 /// The MTG.io SDK, use this to access the various api calls
 #[allow(dead_code)]
 pub struct MtgClient {
     client: Arc<Client>,
-    cards: CardApi,
-    sets: SetApi,
+    pub cards: CardApi,
+    pub sets: SetApi,
+    pub types: TypeApi,
+    pub subtypes: SubtypeApi,
+    pub supertypes: SupertypeApi
 }
 
 impl MtgClient {
@@ -49,8 +57,11 @@ impl MtgClient {
         );
         let cards = CardApi::new(Arc::downgrade(&client));
         let sets = SetApi::new(Arc::downgrade(&client));
+        let types = TypeApi::new(Arc::downgrade(&client));
+        let subtypes = SubtypeApi::new(Arc::downgrade(&client));
+        let supertypes = SupertypeApi::new(Arc::downgrade(&client));
 
-        MtgClient { client, cards, sets }
+        MtgClient { client, cards, sets, types, subtypes, supertypes }
     }
 
     pub fn cards(&self) -> &CardApi {
@@ -58,5 +69,14 @@ impl MtgClient {
     }
     pub fn sets(&self) -> &SetApi {
         &self.sets
+    }
+    pub fn types(&self) -> &TypeApi {
+        &self.types
+    }
+    pub fn subtypes(&self) -> &SubtypeApi {
+        &self.subtypes
+    }
+    pub fn supertypes(&self) -> &SupertypeApi {
+        &self.supertypes
     }
 }

@@ -34,5 +34,11 @@ fn try_main() -> Result<(), Error> {
     }*/
     let sets = sdk.sets().booster("ktk");
     println!("{:?}", sets);
+    let types = sdk.types().all();
+    println!("{:?}", types);
+    let subtypes = sdk.subtypes().all();
+    println!("{:?}", subtypes);
+    let supertypes = sdk.supertypes().all();
+    println!("{:?}", supertypes);
     Ok(())
 }

@@ -25,6 +25,12 @@ pub enum MtgIoErrorKind {
     SetBodyParseError,
     #[fail(display = "Requested set not found")]
     SetNotFound,
+    #[fail(display = "Could not parse the response of the types struct")]
+    TypeBodyParseError,
+    #[fail(display = "Could not parse the response of the subtypes struct")]
+    SubtypeBodyParseError,
+    #[fail(display = "Could not parse the response of the supertypes struct")]
+    SupertypeBodyParseError,
 }
 
 impl Fail for MtgIoError {

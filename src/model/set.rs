@@ -18,7 +18,7 @@ pub(crate) struct SetDto {
 pub struct SetDetail {
     pub code: String,
     pub name: String,
-    #[serde(rename = "type")]
+    #[serde(rename = "types")]
     pub type_: String,
     pub block: Option<String>,
     pub gatherer_code: Option<String>,
