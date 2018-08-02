@@ -1,5 +1,6 @@
 use itertools::Itertools;
 use std::fmt::Display;
+use api::set::filtertypes::SetBlock;
 
 const SEP_AND: &str = ",";
 const SEP_OR: &str = "|";
@@ -23,7 +24,7 @@ impl SetFilterBuilder {
     /// let builder = SetFilter::builder();
     /// let filter = builder
     ///     .name("Khans of Tarkir")
-    ///     .block("Khans of Tarkir")
+    ///     .block(SetBlock::KhansOfTarkir)
     ///     .build();
     /// assert!(filter == SetFilter("name=Khans of Tarkir&block=Khans of Tarkir".to_string()))
     /// ```
@@ -92,16 +93,13 @@ impl SetFilterBuilder {
     /// ```
     /// # use mtgio_client::prelude::*;
     /// let builder = SetFilter::builder();
-    /// let filter = builder.block("Amonkhet")
+    /// let filter = builder.block(SetBlock::Amonkhet)
     ///     .build();
     /// assert!(filter == SetFilter("block=Amonkhet".to_string()))
     /// ```
     #[allow(dead_code)]
-    pub fn block<'a, T>(mut self, block: T) -> SetFilterBuilder
-        where
-            T: Into<&'a str>,
-    {
-        self.add_filter("block", block.into());
+    pub fn block(mut self, block: SetBlock) -> SetFilterBuilder {
+        self.add_filter("block", &block.as_str());
         self
     }
 
@@ -110,16 +108,13 @@ impl SetFilterBuilder {
     /// ```
     /// # use mtgio_client::prelude::*;
     /// let builder = SetFilter::builder();
-    /// let filter = builder.blocks(&vec!["Amonkhet", "Ixalan"])
+    /// let filter = builder.blocks(&vec![SetBlock::Amonkhet, SetBlock::Ixalan])
     ///     .build();
     /// assert!(filter == SetFilter("block=Amonkhet|Ixalan".to_string()));
     /// ```
     #[allow(dead_code)]
-    pub fn blocks<T>(mut self, blocks: &[T]) -> SetFilterBuilder
-        where
-            T: Display,
-    {
-        let values = blocks.into_iter().join(SEP_OR);
+    pub fn blocks(mut self, blocks: &[SetBlock]) -> SetFilterBuilder {
+        let values = blocks.into_iter().map(|value| value.as_str()).join(SEP_OR);
         self.add_filter("block", &values);
         self
     }
