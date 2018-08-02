@@ -45,14 +45,17 @@ impl CardApi {
     /// Returns a specific card by a specific id
     pub fn find(&self, id: u32) -> Result<CardDetail, Error> {
         let find_url = [API_URL, "/cards/", &id.to_string()].join("");
-        let client = match self.client.upgrade() {
-            Some(client) => Ok(client),
-            None => Err(MtgIoErrorKind::ClientDropped),
-        }?;
-        let mut response = client
-            .get(&find_url)
-            .send()
-            .context(MtgIoErrorKind::HttpError)?;
+        let mut response;
+        {
+            let client = match self.client.upgrade() {
+                Some(client) => Ok(client),
+                None => Err(MtgIoErrorKind::ClientDropped),
+            }?;
+            response = client
+                .get(&find_url)
+                .send()
+                .context(MtgIoErrorKind::HttpError)?;
+        }
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
         let card_option = serde_json::from_str::<CardDto>(&body)
         .context(MtgIoErrorKind::CardBodyParseError)?

@@ -10,9 +10,11 @@ extern crate itertools;
 extern crate reqwest;
 extern crate serde;
 extern crate serde_json;
+extern crate chrono;
 
 pub use api::card::card_api::CardApi as cards;
 use api::card::card_api::CardApi;
+use api::set::set_api::SetApi;
 use reqwest::Client;
 use std::sync::Arc;
 use std::time::Duration;
@@ -31,6 +33,7 @@ pub mod prelude {
 pub struct MtgClient {
     client: Arc<Client>,
     cards: CardApi,
+    sets: SetApi,
 }
 
 impl MtgClient {
@@ -43,11 +46,15 @@ impl MtgClient {
                 .unwrap(),
         );
         let cards = CardApi::new(Arc::downgrade(&client));
+        let sets = SetApi::new(Arc::downgrade(&client));
 
-        MtgClient { client, cards }
+        MtgClient { client, cards, sets }
     }
 
     pub fn cards(&self) -> &CardApi {
         &self.cards
+    }
+    pub fn sets(&self) -> &SetApi {
+        &self.sets
     }
 }

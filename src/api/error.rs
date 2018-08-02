@@ -19,8 +19,12 @@ pub enum MtgIoErrorKind {
     BodyReadError,
     #[fail(display = "Could not parse the response of the card struct")]
     CardBodyParseError,
-    #[fail(display = "Requested Card not found")]
+    #[fail(display = "Requested card not found")]
     CardNotFound,
+    #[fail(display = "Could not parse the response of the set struct")]
+    SetBodyParseError,
+    #[fail(display = "Requested set not found")]
+    SetNotFound,
 }
 
 impl Fail for MtgIoError {

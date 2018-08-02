@@ -12,7 +12,7 @@ fn main() {
 
 fn try_main() -> Result<(), Error> {
     let sdk = MtgClient::new(100);
-    let mut get_cards_request = sdk.cards().all();
+    /*let mut get_cards_request = sdk.cards().all();
     get_cards_request.set_page_size(100);
     get_cards_request.set_page(4);
     let mut cards = Vec::new();
@@ -31,6 +31,8 @@ fn try_main() -> Result<(), Error> {
             }
         }
         page += 1;
-    }
+    }*/
+    let sets = sdk.sets().all();
+    println!("{:?}", sets);
     Ok(())
 }

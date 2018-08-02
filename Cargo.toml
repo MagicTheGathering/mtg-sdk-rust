@@ -17,3 +17,4 @@ itertools = "0.7"
 hyper = "0.11"
 failure = "0.1"
 failure_derive = "0.1"
+chrono = { version = "0.4.5", features = ["serde"] }
