@@ -18,6 +18,7 @@ use api::set::set_api::SetApi;
 use api::types::type_api::TypeApi;
 use api::types::type_api::SubtypeApi;
 use api::types::type_api::SupertypeApi;
+use api::format::format_api::FormatApi;
 use reqwest::Client;
 use std::sync::Arc;
 use std::time::Duration;
@@ -43,7 +44,8 @@ pub struct MtgClient {
     pub sets: SetApi,
     pub types: TypeApi,
     pub subtypes: SubtypeApi,
-    pub supertypes: SupertypeApi
+    pub supertypes: SupertypeApi,
+    pub formats: FormatApi,
 }
 
 impl MtgClient {
@@ -60,8 +62,9 @@ impl MtgClient {
         let types = TypeApi::new(Arc::downgrade(&client));
         let subtypes = SubtypeApi::new(Arc::downgrade(&client));
         let supertypes = SupertypeApi::new(Arc::downgrade(&client));
+        let formats = FormatApi::new(Arc::downgrade(&client));
 
-        MtgClient { client, cards, sets, types, subtypes, supertypes }
+        MtgClient { client, cards, sets, types, subtypes, supertypes, formats }
     }
 
     pub fn cards(&self) -> &CardApi {
@@ -78,5 +81,9 @@ impl MtgClient {
     }
     pub fn supertypes(&self) -> &SupertypeApi {
         &self.supertypes
+    }
+
+    pub fn formats(&self) -> &FormatApi {
+        &self.formats
     }
 }

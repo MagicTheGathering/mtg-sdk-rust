@@ -31,6 +31,8 @@ pub enum MtgIoErrorKind {
     SubtypeBodyParseError,
     #[fail(display = "Could not parse the response of the supertypes struct")]
     SupertypeBodyParseError,
+    #[fail(display = "Could not parse the response of the formats struct")]
+    FormatBodyParseError,
 }
 
 impl Fail for MtgIoError {

@@ -40,5 +40,7 @@ fn try_main() -> Result<(), Error> {
     println!("{:?}", subtypes);
     let supertypes = sdk.supertypes().all();
     println!("{:?}", supertypes);
+    let formats = sdk.formats().all();
+    println!("{:?}", formats);
     Ok(())
 }
