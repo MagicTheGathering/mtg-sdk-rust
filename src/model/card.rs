@@ -33,7 +33,7 @@ pub struct CardDetail {
     pub subtypes: Vec<String>,
     pub rarity: String,
     pub set: String,
-    pub set_name: String,
+    pub set_name: Option<String>,
     #[serde(default)]
     pub text: String,
     #[serde(default)]

@@ -9,6 +9,8 @@ use std::sync::Weak;
 use model::set::SetDetail;
 use model::set::SetsDto;
 use model::set::SetDto;
+use model::card::CardsDto;
+use model::card::CardDetail;
 
 const API_URL: &str = "https://api.magicthegathering.io/v1";
 
@@ -73,9 +75,11 @@ impl SetApi {
         }
     }
 
-    /// Returns a specific card by a specific id
-    pub fn find(&self, id: u32) -> Result<SetDetail, Error> {
-        let find_url = [API_URL, "/sets/", &id.to_string()].join("");
+    /// Returns the specified set by the set code
+    pub fn find<'a, T>(&self, code: T) -> Result<SetDetail, Error>
+        where T: Into<&'a str>
+    {
+        let find_url = [API_URL, "/sets/", code.into()].join("");
         let mut response;
         {
             let client = match self.client.upgrade() {
@@ -88,14 +92,39 @@ impl SetApi {
                 .context(MtgIoErrorKind::HttpError)?;
         }
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
-        let card_option = serde_json::from_str::<SetDto>(&body)
+        let set_option = serde_json::from_str::<SetDto>(&body)
             .context(MtgIoErrorKind::SetBodyParseError)?
             .set;
         Ok(
-            match card_option {
-                Some(card) => Ok(card),
+            match set_option {
+                Some(set) => Ok(set),
                 None => Err(MtgIoErrorKind::SetNotFound)
             }?
+        )
+    }
+
+    /// Returns a sample booster pack of cards from the specified set
+    pub fn booster<'a, T>(&self, code: T) -> Result<Vec<CardDetail>, Error>
+        where T: Into<&'a str>
+    {
+        let booster_url = [API_URL, "/sets/", code.into()].join("");
+        let booster_url = [&booster_url, "/booster"].join("");
+        let mut response;
+        {
+            let client = match self.client.upgrade() {
+                Some(client) => Ok(client),
+                None => Err(MtgIoErrorKind::ClientDropped),
+            }?;
+            response = client
+                .get(&booster_url)
+                .send()
+                .context(MtgIoErrorKind::HttpError)?;
+        }
+        let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
+        Ok(
+            serde_json::from_str::<CardsDto>(&body)
+                .context(MtgIoErrorKind::SetBodyParseError)?
+                .cards
         )
     }
 }

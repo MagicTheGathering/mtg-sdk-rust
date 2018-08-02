@@ -32,7 +32,7 @@ fn try_main() -> Result<(), Error> {
         }
         page += 1;
     }*/
-    let sets = sdk.sets().all();
+    let sets = sdk.sets().booster("ktk");
     println!("{:?}", sets);
     Ok(())
 }

@@ -2,7 +2,6 @@ use itertools::Itertools;
 use std::fmt::Display;
 use api::set::filtertypes::SetBlock;
 
-const SEP_AND: &str = ",";
 const SEP_OR: &str = "|";
 
 #[derive(Clone, Debug)]
