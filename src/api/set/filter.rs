@@ -37,9 +37,9 @@ impl SetFilterBuilder {
     /// ```
     /// # use mtgio_client::prelude::*;
     /// let builder = SetFilter::builder();
-    /// let filter = builder.custom("name", "Khans of Tarkir")
+    /// let filter = builder.custom("name", "Dominaria")
     ///     .build();
-    /// assert!(filter == SetFilter("name=Khans of Tarkir".to_string()))
+    /// assert!(filter == SetFilter("name=Dominaria".to_string()))
     /// ```
     #[allow(dead_code)]
     pub fn custom<'a, T>(mut self, key: T, value: T) -> SetFilterBuilder
@@ -55,9 +55,9 @@ impl SetFilterBuilder {
     /// ```
     /// # use mtgio_client::prelude::*;
     /// let builder = SetFilter::builder();
-    /// let filter = builder.name("Shock")
+    /// let filter = builder.name("Dominaria")
     ///     .build();
-    /// assert!(filter == SetFilter("name=Shock".to_string()))
+    /// assert!(filter == SetFilter("name=Dominaria".to_string()))
     /// ```
     #[allow(dead_code)]
     pub fn name<'a, T>(mut self, name: T) -> SetFilterBuilder
@@ -68,14 +68,33 @@ impl SetFilterBuilder {
         self
     }
 
+    /// Every set that (partially) matches one of the specified names will match the filter
+    ///
+    /// ```
+    /// # use mtgio_client::prelude::*;
+    /// let builder = SetFilter::builder();
+    /// let filter = builder.names(&vec!["Dominaria", "Core Set 2019"])
+    ///     .build();
+    /// assert!(filter == SetFilter("name=Dominaria|Core Set 2019".to_string()));
+    /// ```
+    #[allow(dead_code)]
+    pub fn names<T>(mut self, names: &[T]) -> SetFilterBuilder
+        where
+            T: Display,
+    {
+        let values = names.into_iter().join(SEP_OR);
+        self.add_filter("name", &values);
+        self
+    }
+
     /// Every set that (partially) matches the specified block will match the filter
     ///
     /// ```
     /// # use mtgio_client::prelude::*;
     /// let builder = SetFilter::builder();
-    /// let filter = builder.block("Shock")
+    /// let filter = builder.block("Amonkhet")
     ///     .build();
-    /// assert!(filter == SetFilter("block=Shock".to_string()))
+    /// assert!(filter == SetFilter("block=Amonkhet".to_string()))
     /// ```
     #[allow(dead_code)]
     pub fn block<'a, T>(mut self, block: T) -> SetFilterBuilder
@@ -83,6 +102,25 @@ impl SetFilterBuilder {
             T: Into<&'a str>,
     {
         self.add_filter("block", block.into());
+        self
+    }
+
+    /// Every set that (partially) matches one of the specified blocks will match the filter
+    ///
+    /// ```
+    /// # use mtgio_client::prelude::*;
+    /// let builder = SetFilter::builder();
+    /// let filter = builder.blocks(&vec!["Amonkhet", "Ixalan"])
+    ///     .build();
+    /// assert!(filter == SetFilter("block=Amonkhet|Ixalan".to_string()));
+    /// ```
+    #[allow(dead_code)]
+    pub fn blocks<T>(mut self, blocks: &[T]) -> SetFilterBuilder
+        where
+            T: Display,
+    {
+        let values = blocks.into_iter().join(SEP_OR);
+        self.add_filter("block", &values);
         self
     }
 
