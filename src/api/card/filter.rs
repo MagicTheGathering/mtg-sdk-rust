@@ -101,7 +101,7 @@ impl CardFilterBuilder {
     #[allow(dead_code)]
     pub fn name_with_language<'a, T>(mut self, name: T, language: CardLanguage) -> CardFilterBuilder
     where
-        T: Into<&'a str>
+        T: Into<&'a str>,
     {
         self.add_filter("name", name.into());
         self.add_filter("language", &language.as_str());

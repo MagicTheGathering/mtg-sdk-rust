@@ -4,14 +4,14 @@ use failure::ResultExt;
 use reqwest::Client;
 use serde_json;
 
-use std::sync::Weak;
 use model::types::TypesDto;
+use std::sync::Weak;
 
-use API_URL;
+use api::response::ApiResponse;
 use model::types::SubtypesDto;
 use model::types::SupertypesDto;
-use api::response::ApiResponse;
 use reqwest::Response;
+use API_URL;
 
 pub struct TypeApi {
     client: Weak<Client>,

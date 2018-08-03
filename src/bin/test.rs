@@ -1,12 +1,12 @@
 extern crate mtgio_client;
 extern crate serde_json;
 
+use mtgio_client::api::card::filter::CardFilter;
+use mtgio_client::api::card::filtertypes::CardColor;
+use mtgio_client::api::card::filtertypes::CardType;
+use mtgio_client::api::card::filtertypes::GameFormat;
 use mtgio_client::MtgClient;
 use std::error::Error;
-use mtgio_client::api::card::filter::CardFilter;
-use mtgio_client::api::card::filtertypes::CardType;
-use mtgio_client::api::card::filtertypes::CardColor;
-use mtgio_client::api::card::filtertypes::GameFormat;
 
 fn main() {
     try_main().unwrap();
@@ -19,14 +19,14 @@ fn try_main() -> Result<(), Box<Error>> {
     let api = MtgClient::new(100);
 
     // Create a filtered cards request
-    let mut get_cards_request = api.cards()
-        .all_filtered(
-            CardFilter::builder()
-                .cardtype(CardType::Instant)
-                .colors_or(&[CardColor::Blue, CardColor::Red])
-                .game_format(GameFormat::Standard)
-                .converted_mana_cost(2)
-                .build());
+    let mut get_cards_request = api.cards().all_filtered(
+        CardFilter::builder()
+            .cardtype(CardType::Instant)
+            .colors_or(&[CardColor::Blue, CardColor::Red])
+            .game_format(GameFormat::Standard)
+            .converted_mana_cost(2)
+            .build(),
+    );
 
     //Return 2 cards per request
     get_cards_request.set_page_size(2);

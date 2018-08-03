@@ -6,11 +6,11 @@ use serde_json;
 
 use std::sync::Weak;
 
-use API_URL;
-use model::format::FormatDto;
 use api::response::ApiResponse;
+use model::format::FormatDto;
+use API_URL;
 
-pub struct FormatApi{
+pub struct FormatApi {
     client: Weak<Client>,
 }
 
@@ -38,8 +38,6 @@ impl FormatApi {
         let formats = serde_json::from_str::<FormatDto>(&body)
             .context(MtgIoErrorKind::FormatBodyParseError)?
             .formats;
-        Ok(
-            ApiResponse::new(formats, response.headers())
-        )
+        Ok(ApiResponse::new(formats, response.headers()))
     }
 }

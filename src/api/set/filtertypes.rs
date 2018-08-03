@@ -27,7 +27,7 @@ pub enum SetBlock {
     ShadowsOverInnistrad,
     Kaladesh,
     Amonkhet,
-    Ixalan
+    Ixalan,
 }
 
 impl SetBlock {
@@ -61,7 +61,7 @@ impl SetBlock {
             ShadowsOverInnistrad => "Shadows over Innistrad",
             Kaladesh => "Kaladesh",
             Amonkhet => "Amonkhet",
-            Ixalan => "Ixalan"
+            Ixalan => "Ixalan",
         }
     }
 }

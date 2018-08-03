@@ -12,7 +12,6 @@ pub(crate) struct SubtypesDto {
     pub subtypes: Vec<String>,
 }
 
-
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct SupertypesDto {

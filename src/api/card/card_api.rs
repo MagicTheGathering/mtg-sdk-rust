@@ -1,17 +1,17 @@
-use api::error::MtgIoErrorKind;
 use api::card::filter::CardFilter;
 use api::card::filtertypes::CardResponseField;
+use api::error::MtgIoErrorKind;
 use failure::Error;
 use failure::ResultExt;
 use reqwest::Client;
 use serde_json;
 
+use api::response::ApiResponse;
 use hyper::header::Headers;
 use model::card::CardDetail;
 use model::card::CardDto;
 use model::card::CardsDto;
 use std::sync::Weak;
-use api::response::ApiResponse;
 
 use API_URL;
 
@@ -53,14 +53,12 @@ impl CardApi {
         }
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
         let card_option = serde_json::from_str::<CardDto>(&body)
-        .context(MtgIoErrorKind::CardBodyParseError)?
+            .context(MtgIoErrorKind::CardBodyParseError)?
             .card;
-        Ok(
-            match card_option {
-                Some(card) => Ok(ApiResponse::new(card, response.headers())),
-                None => Err(MtgIoErrorKind::CardNotFound)
-            }?
-        )
+        Ok(match card_option {
+            Some(card) => Ok(ApiResponse::new(card, response.headers())),
+            None => Err(MtgIoErrorKind::CardNotFound),
+        }?)
     }
 }
 
@@ -177,7 +175,11 @@ impl AllCardsRequest {
         [self.url.as_str(), paged_filter_sized.as_str()].join("?")
     }
 
-    fn create_response(&self, headers: &Headers, body: &str) -> Result<ApiResponse<Vec<CardDetail>>, Error> {
+    fn create_response(
+        &self,
+        headers: &Headers,
+        body: &str,
+    ) -> Result<ApiResponse<Vec<CardDetail>>, Error> {
         let cards = serde_json::from_str::<CardsDto>(body)
             .context(MtgIoErrorKind::CardBodyParseError)?
             .cards;

@@ -5,20 +5,20 @@ extern crate hyper;
 #[macro_use]
 extern crate failure_derive;
 
+extern crate chrono;
 extern crate failure;
 extern crate itertools;
 extern crate reqwest;
 extern crate serde;
 extern crate serde_json;
-extern crate chrono;
 
 pub use api::card::card_api::CardApi as cards;
 use api::card::card_api::CardApi;
+use api::format::format_api::FormatApi;
 use api::set::set_api::SetApi;
-use api::types::type_api::TypeApi;
 use api::types::type_api::SubtypeApi;
 use api::types::type_api::SupertypeApi;
-use api::format::format_api::FormatApi;
+use api::types::type_api::TypeApi;
 use reqwest::Client;
 use std::sync::Arc;
 use std::time::Duration;
@@ -64,7 +64,15 @@ impl MtgClient {
         let supertypes = SupertypeApi::new(Arc::downgrade(&client));
         let formats = FormatApi::new(Arc::downgrade(&client));
 
-        MtgClient { client, cards, sets, types, subtypes, supertypes, formats }
+        MtgClient {
+            client,
+            cards,
+            sets,
+            types,
+            subtypes,
+            supertypes,
+            formats,
+        }
     }
 
     pub fn cards(&self) -> &CardApi {

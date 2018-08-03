@@ -1,6 +1,6 @@
+use api::set::filtertypes::SetBlock;
 use itertools::Itertools;
 use std::fmt::Display;
-use api::set::filtertypes::SetBlock;
 
 const SEP_OR: &str = "|";
 
@@ -43,8 +43,8 @@ impl SetFilterBuilder {
     /// ```
     #[allow(dead_code)]
     pub fn custom<'a, T>(mut self, key: T, value: T) -> SetFilterBuilder
-        where
-            T: Into<&'a str>,
+    where
+        T: Into<&'a str>,
     {
         self.add_filter(key.into(), value.into());
         self
@@ -61,8 +61,8 @@ impl SetFilterBuilder {
     /// ```
     #[allow(dead_code)]
     pub fn name<'a, T>(mut self, name: T) -> SetFilterBuilder
-        where
-            T: Into<&'a str>,
+    where
+        T: Into<&'a str>,
     {
         self.add_filter("name", name.into());
         self
@@ -79,8 +79,8 @@ impl SetFilterBuilder {
     /// ```
     #[allow(dead_code)]
     pub fn names<T>(mut self, names: &[T]) -> SetFilterBuilder
-        where
-            T: Display,
+    where
+        T: Display,
     {
         let values = names.into_iter().join(SEP_OR);
         self.add_filter("name", &values);
@@ -119,8 +119,8 @@ impl SetFilterBuilder {
     }
 
     fn add_filter<T>(&mut self, key: T, values: T)
-        where
-            T: Display,
+    where
+        T: Display,
     {
         if !self.filter.is_empty() {
             self.filter = [&self.filter, "&"].join("");

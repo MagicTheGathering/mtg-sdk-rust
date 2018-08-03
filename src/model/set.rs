@@ -33,12 +33,12 @@ pub struct SetDetail {
     #[serde(rename = "mkm_name")]
     pub mkm_name: Option<String>,
     #[serde(rename = "mkm_id")]
-    pub mkm_id: Option<u32>
+    pub mkm_id: Option<u32>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(untagged)]
-pub enum Booster{
+pub enum Booster {
     Multiple(Vec<String>),
     Single(String),
 }

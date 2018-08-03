@@ -16,8 +16,8 @@ pub struct ApiResponse<T> {
     pub ratelimit_remaining: Option<u32>,
 }
 
-impl<T> ApiResponse<T>{
-    pub(crate) fn new(content: T, headers: &Headers) -> ApiResponse<T>{
+impl<T> ApiResponse<T> {
+    pub(crate) fn new(content: T, headers: &Headers) -> ApiResponse<T> {
         let page_size = headers.get::<PageSizeHeader>().map(|header| header.0);
         let count = headers.get::<CountHeader>().map(|header| header.0);
         let total_count = headers.get::<TotalCountHeader>().map(|header| header.0);
@@ -35,4 +35,3 @@ impl<T> ApiResponse<T>{
         }
     }
 }
-

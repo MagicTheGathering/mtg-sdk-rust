@@ -5,15 +5,15 @@ use failure::ResultExt;
 use reqwest::Client;
 use serde_json;
 
-use std::sync::Weak;
-use model::set::SetDetail;
-use model::set::SetsDto;
-use model::set::SetDto;
-use model::card::CardsDto;
 use model::card::CardDetail;
+use model::card::CardsDto;
+use model::set::SetDetail;
+use model::set::SetDto;
+use model::set::SetsDto;
+use std::sync::Weak;
 
-use API_URL;
 use api::response::ApiResponse;
+use API_URL;
 
 ///Responsible for the calls to the /cards endpoint
 pub struct SetApi {
@@ -63,7 +63,7 @@ impl SetApi {
                 .context(MtgIoErrorKind::HttpError)?;
         }
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
-        let sets =serde_json::from_str::<SetsDto>(&body)
+        let sets = serde_json::from_str::<SetsDto>(&body)
             .context(MtgIoErrorKind::SetBodyParseError)?
             .sets;
         Ok(ApiResponse::new(sets, response.headers()))
@@ -71,7 +71,8 @@ impl SetApi {
 
     /// Returns the specified set by the set code
     pub fn find<'a, T>(&self, code: T) -> Result<ApiResponse<SetDetail>, Error>
-        where T: Into<&'a str>
+    where
+        T: Into<&'a str>,
     {
         let find_url = [API_URL, "/sets/", code.into()].join("");
         let mut response;
@@ -89,17 +90,16 @@ impl SetApi {
         let set_option = serde_json::from_str::<SetDto>(&body)
             .context(MtgIoErrorKind::SetBodyParseError)?
             .set;
-        Ok(
-            match set_option {
-                Some(set) => Ok(ApiResponse::new(set, response.headers())),
-                None => Err(MtgIoErrorKind::SetNotFound)
-            }?
-        )
+        Ok(match set_option {
+            Some(set) => Ok(ApiResponse::new(set, response.headers())),
+            None => Err(MtgIoErrorKind::SetNotFound),
+        }?)
     }
 
     /// Returns a sample booster pack of cards from the specified set
     pub fn booster<'a, T>(&self, code: T) -> Result<ApiResponse<Vec<CardDetail>>, Error>
-        where T: Into<&'a str>
+    where
+        T: Into<&'a str>,
     {
         let booster_url = [API_URL, "/sets/", code.into()].join("");
         let booster_url = [&booster_url, "/booster"].join("");
