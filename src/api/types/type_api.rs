@@ -34,7 +34,7 @@ impl TypeApi {
     #[allow(dead_code)]
     pub fn all(&self) -> Result<ApiResponse<Vec<String>>, Error> {
         let all_url = [API_URL, "/types"].join("");
-        let mut response = send_response(all_url, &self.client)?;
+        let mut response = send_response(&all_url, &self.client)?;
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
         let types = serde_json::from_str::<TypesDto>(&body)
             .context(MtgIoErrorKind::TypeBodyParseError)?
@@ -52,7 +52,7 @@ impl SubtypeApi {
     #[allow(dead_code)]
     pub fn all(&self) -> Result<ApiResponse<Vec<String>>, Error> {
         let all_url = [API_URL, "/subtypes"].join("");
-        let mut response = send_response(all_url, &self.client)?;
+        let mut response = send_response(&all_url, &self.client)?;
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
         let subtypes = serde_json::from_str::<SubtypesDto>(&body)
             .context(MtgIoErrorKind::SubtypeBodyParseError)?
@@ -70,7 +70,7 @@ impl SupertypeApi {
     #[allow(dead_code)]
     pub fn all(&self) -> Result<ApiResponse<Vec<String>>, Error> {
         let all_url = [API_URL, "/supertypes"].join("");
-        let mut response = send_response(all_url, &self.client)?;
+        let mut response = send_response(&all_url, &self.client)?;
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
         let supertypes = serde_json::from_str::<SupertypesDto>(&body)
             .context(MtgIoErrorKind::SupertypeBodyParseError)?
@@ -79,13 +79,13 @@ impl SupertypeApi {
     }
 }
 
-fn send_response(all_url: String, client: &Weak<Client>) -> Result<Response, Error> {
+fn send_response(all_url: &str, client: &Weak<Client>) -> Result<Response, Error> {
     let client = match client.upgrade() {
         Some(client) => Ok(client),
         None => Err(MtgIoErrorKind::ClientDropped),
     }?;
     Ok(client
-        .get(&all_url)
+        .get(all_url)
         .send()
         .context(MtgIoErrorKind::HttpError)?)
 }

@@ -34,7 +34,7 @@ fn try_main() -> Result<(), Box<Error>> {
     //collect all cards from the first 5 pages
     for _ in 0..5 {
         let cards = get_cards_request.next_page()?.content;
-        if cards.len() == 0 {
+        if cards.is_empty() {
             break;
         }
         filtered_cards.extend(cards);

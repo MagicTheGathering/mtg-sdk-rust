@@ -50,7 +50,7 @@ impl SetApi {
     /// Returns all sets matching the supplied filter
     #[allow(dead_code)]
     pub fn all_filtered(&self, filter: SetFilter) -> Result<ApiResponse<Vec<SetDetail>>, Error> {
-        let all_url = SetApi::create_filtered_url(&filter);
+        let all_url = SetApi::create_filtered_url(filter);
         let mut response;
         {
             let client = match self.client.upgrade() {
@@ -121,12 +121,12 @@ impl SetApi {
         Ok(ApiResponse::new(cards, response.headers()))
     }
 
-    fn create_filtered_url(filter: &SetFilter) -> String {
+    fn create_filtered_url(filter: SetFilter) -> String {
         let url = [API_URL, "/sets"].join("");
         if filter.0.is_empty() {
             url
         } else {
-            [url, filter.0.clone()].join("?")
+            [url, filter.0].join("?")
         }
     }
 }
