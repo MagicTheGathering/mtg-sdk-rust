@@ -10,6 +10,8 @@ use model::types::TypesDto;
 use API_URL;
 use model::types::SubtypesDto;
 use model::types::SupertypesDto;
+use api::response::ApiResponse;
+use reqwest::Response;
 
 pub struct TypeApi {
     client: Weak<Client>,
@@ -30,23 +32,14 @@ impl TypeApi {
 
     /// Returns all types
     #[allow(dead_code)]
-    pub fn all(&self) -> Result<Vec<String>, Error> {
+    pub fn all(&self) -> Result<ApiResponse<Vec<String>>, Error> {
         let all_url = [API_URL, "/types"].join("");
-        let mut response;
-        {
-            let client = match self.client.upgrade() {
-                Some(client) => Ok(client),
-                None => Err(MtgIoErrorKind::ClientDropped),
-            }?;
-            response = client
-                .get(&all_url)
-                .send()
-                .context(MtgIoErrorKind::HttpError)?;
-        }
+        let mut response = send_response(all_url, &self.client)?;
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
-        Ok(serde_json::from_str::<TypesDto>(&body)
+        let types = serde_json::from_str::<TypesDto>(&body)
             .context(MtgIoErrorKind::TypeBodyParseError)?
-            .types)
+            .types;
+        Ok(ApiResponse::new(types, response.headers()))
     }
 }
 
@@ -57,23 +50,14 @@ impl SubtypeApi {
 
     /// Returns all subtypes
     #[allow(dead_code)]
-    pub fn all(&self) -> Result<Vec<String>, Error> {
+    pub fn all(&self) -> Result<ApiResponse<Vec<String>>, Error> {
         let all_url = [API_URL, "/subtypes"].join("");
-        let mut response;
-        {
-            let client = match self.client.upgrade() {
-                Some(client) => Ok(client),
-                None => Err(MtgIoErrorKind::ClientDropped),
-            }?;
-            response = client
-                .get(&all_url)
-                .send()
-                .context(MtgIoErrorKind::HttpError)?;
-        }
+        let mut response = send_response(all_url, &self.client)?;
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
-        Ok(serde_json::from_str::<SubtypesDto>(&body)
+        let subtypes = serde_json::from_str::<SubtypesDto>(&body)
             .context(MtgIoErrorKind::SubtypeBodyParseError)?
-            .subtypes)
+            .subtypes;
+        Ok(ApiResponse::new(subtypes, response.headers()))
     }
 }
 
@@ -84,22 +68,24 @@ impl SupertypeApi {
 
     /// Returns all subtypes
     #[allow(dead_code)]
-    pub fn all(&self) -> Result<Vec<String>, Error> {
+    pub fn all(&self) -> Result<ApiResponse<Vec<String>>, Error> {
         let all_url = [API_URL, "/supertypes"].join("");
-        let mut response;
-        {
-            let client = match self.client.upgrade() {
-                Some(client) => Ok(client),
-                None => Err(MtgIoErrorKind::ClientDropped),
-            }?;
-            response = client
-                .get(&all_url)
-                .send()
-                .context(MtgIoErrorKind::HttpError)?;
-        }
+        let mut response = send_response(all_url, &self.client)?;
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
-        Ok(serde_json::from_str::<SupertypesDto>(&body)
+        let supertypes = serde_json::from_str::<SupertypesDto>(&body)
             .context(MtgIoErrorKind::SupertypeBodyParseError)?
-            .supertypes)
+            .supertypes;
+        Ok(ApiResponse::new(supertypes, response.headers()))
     }
+}
+
+fn send_response(all_url: String, client: &Weak<Client>) -> Result<Response, Error> {
+    let client = match client.upgrade() {
+        Some(client) => Ok(client),
+        None => Err(MtgIoErrorKind::ClientDropped),
+    }?;
+    Ok(client
+        .get(&all_url)
+        .send()
+        .context(MtgIoErrorKind::HttpError)?)
 }

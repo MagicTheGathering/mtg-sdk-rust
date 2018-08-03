@@ -11,14 +11,9 @@ use model::card::CardDetail;
 use model::card::CardDto;
 use model::card::CardsDto;
 use std::sync::Weak;
+use api::response::ApiResponse;
 
 use API_URL;
-
-header! { (PageSizeHeader, "Page-Size") => [u32] }
-header! { (CountHeader, "Count") => [u32] }
-header! { (TotalCountHeader, "Total-Count") => [u32] }
-header! { (RatelimitLimitHeader, "Ratelimit-Limit") => [u32] }
-header! { (RatelimitRemainingHeader, "Ratelimit-Remaining") => [u32] }
 
 ///Responsible for the calls to the /cards endpoint
 pub struct CardApi {
@@ -43,7 +38,7 @@ impl CardApi {
     }
 
     /// Returns a specific card by a specific id
-    pub fn find(&self, id: u32) -> Result<CardDetail, Error> {
+    pub fn find(&self, id: u32) -> Result<ApiResponse<CardDetail>, Error> {
         let find_url = [API_URL, "/cards/", &id.to_string()].join("");
         let mut response;
         {
@@ -62,7 +57,7 @@ impl CardApi {
             .card;
         Ok(
             match card_option {
-                Some(card) => Ok(card),
+                Some(card) => Ok(ApiResponse::new(card, response.headers())),
                 None => Err(MtgIoErrorKind::CardNotFound)
             }?
         )
@@ -138,13 +133,12 @@ impl AllCardsRequest {
     /// to read the response, it will return an error.
     ///
     #[allow(dead_code)]
-    pub fn next_page(&mut self) -> Result<AllCardsResponse, Error> {
+    pub fn next_page(&mut self) -> Result<ApiResponse<Vec<CardDetail>>, Error> {
         let url = self.create_filtered_url();
         let client = match self.client.upgrade() {
             Some(client) => Ok(client),
             None => Err(MtgIoErrorKind::ClientDropped),
         }?;
-        println!("{}", url);
         let mut response = client.get(&url).send().context(MtgIoErrorKind::HttpError)?;
         self.page += 1;
         let headers = response.headers().clone();
@@ -183,35 +177,10 @@ impl AllCardsRequest {
         [self.url.as_str(), paged_filter_sized.as_str()].join("?")
     }
 
-    fn create_response(&self, headers: &Headers, body: &str) -> Result<AllCardsResponse, Error> {
+    fn create_response(&self, headers: &Headers, body: &str) -> Result<ApiResponse<Vec<CardDetail>>, Error> {
         let cards = serde_json::from_str::<CardsDto>(body)
             .context(MtgIoErrorKind::CardBodyParseError)?
             .cards;
-        let page_size = headers.get::<PageSizeHeader>().map(|header| header.0);
-        let count = headers.get::<CountHeader>().map(|header| header.0);
-        let total_count = headers.get::<TotalCountHeader>().map(|header| header.0);
-        let ratelimit_limit = headers.get::<RatelimitLimitHeader>().map(|header| header.0);
-        let ratelimit_remaining = headers
-            .get::<RatelimitRemainingHeader>()
-            .map(|header| header.0);
-        Ok(AllCardsResponse {
-            cards,
-            page_size,
-            count,
-            total_count,
-            ratelimit_limit,
-            ratelimit_remaining,
-        })
+        Ok(ApiResponse::new(cards, headers))
     }
-}
-
-/// Response returned by the Cards API
-#[allow(dead_code)]
-pub struct AllCardsResponse {
-    pub cards: Vec<CardDetail>,
-    pub page_size: Option<u32>,
-    pub count: Option<u32>,
-    pub total_count: Option<u32>,
-    pub ratelimit_limit: Option<u32>,
-    pub ratelimit_remaining: Option<u32>,
 }

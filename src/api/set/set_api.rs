@@ -13,6 +13,7 @@ use model::card::CardsDto;
 use model::card::CardDetail;
 
 use API_URL;
+use api::response::ApiResponse;
 
 ///Responsible for the calls to the /cards endpoint
 pub struct SetApi {
@@ -26,7 +27,7 @@ impl SetApi {
 
     /// Returns all Sets
     #[allow(dead_code)]
-    pub fn all(&self) -> Result<Vec<SetDetail>, Error> {
+    pub fn all(&self) -> Result<ApiResponse<Vec<SetDetail>>, Error> {
         let all_url = [API_URL, "/sets"].join("");
         let mut response;
         {
@@ -40,14 +41,15 @@ impl SetApi {
                 .context(MtgIoErrorKind::HttpError)?;
         }
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
-        Ok(serde_json::from_str::<SetsDto>(&body)
+        let sets = serde_json::from_str::<SetsDto>(&body)
             .context(MtgIoErrorKind::SetBodyParseError)?
-            .sets)
+            .sets;
+        Ok(ApiResponse::new(sets, response.headers()))
     }
 
     /// Returns all sets matching the supplied filter
     #[allow(dead_code)]
-    pub fn all_filtered(&self, filter: SetFilter) -> Result<Vec<SetDetail>, Error> {
+    pub fn all_filtered(&self, filter: SetFilter) -> Result<ApiResponse<Vec<SetDetail>>, Error> {
         let all_url = SetApi::create_filtered_url(&filter);
         let mut response;
         {
@@ -61,13 +63,14 @@ impl SetApi {
                 .context(MtgIoErrorKind::HttpError)?;
         }
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
-        Ok(serde_json::from_str::<SetsDto>(&body)
+        let sets =serde_json::from_str::<SetsDto>(&body)
             .context(MtgIoErrorKind::SetBodyParseError)?
-            .sets)
+            .sets;
+        Ok(ApiResponse::new(sets, response.headers()))
     }
 
     /// Returns the specified set by the set code
-    pub fn find<'a, T>(&self, code: T) -> Result<SetDetail, Error>
+    pub fn find<'a, T>(&self, code: T) -> Result<ApiResponse<SetDetail>, Error>
         where T: Into<&'a str>
     {
         let find_url = [API_URL, "/sets/", code.into()].join("");
@@ -88,14 +91,14 @@ impl SetApi {
             .set;
         Ok(
             match set_option {
-                Some(set) => Ok(set),
+                Some(set) => Ok(ApiResponse::new(set, response.headers())),
                 None => Err(MtgIoErrorKind::SetNotFound)
             }?
         )
     }
 
     /// Returns a sample booster pack of cards from the specified set
-    pub fn booster<'a, T>(&self, code: T) -> Result<Vec<CardDetail>, Error>
+    pub fn booster<'a, T>(&self, code: T) -> Result<ApiResponse<Vec<CardDetail>>, Error>
         where T: Into<&'a str>
     {
         let booster_url = [API_URL, "/sets/", code.into()].join("");
@@ -112,11 +115,10 @@ impl SetApi {
                 .context(MtgIoErrorKind::HttpError)?;
         }
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
-        Ok(
-            serde_json::from_str::<CardsDto>(&body)
-                .context(MtgIoErrorKind::SetBodyParseError)?
-                .cards
-        )
+        let cards = serde_json::from_str::<CardsDto>(&body)
+            .context(MtgIoErrorKind::SetBodyParseError)?
+            .cards;
+        Ok(ApiResponse::new(cards, response.headers()))
     }
 
     fn create_filtered_url(filter: &SetFilter) -> String {

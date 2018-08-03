@@ -8,6 +8,7 @@ use std::sync::Weak;
 
 use API_URL;
 use model::format::FormatDto;
+use api::response::ApiResponse;
 
 pub struct FormatApi{
     client: Weak<Client>,
@@ -20,7 +21,7 @@ impl FormatApi {
 
     /// Returns all types
     #[allow(dead_code)]
-    pub fn all(&self) -> Result<Vec<String>, Error> {
+    pub fn all(&self) -> Result<ApiResponse<Vec<String>>, Error> {
         let all_url = [API_URL, "/formats"].join("");
         let mut response;
         {
@@ -34,8 +35,11 @@ impl FormatApi {
                 .context(MtgIoErrorKind::HttpError)?;
         }
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
-        Ok(serde_json::from_str::<FormatDto>(&body)
+        let formats = serde_json::from_str::<FormatDto>(&body)
             .context(MtgIoErrorKind::FormatBodyParseError)?
-            .formats)
+            .formats;
+        Ok(
+            ApiResponse::new(formats, response.headers())
+        )
     }
 }
