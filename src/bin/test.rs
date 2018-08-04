@@ -1,12 +1,12 @@
 extern crate mtgio_client;
 extern crate serde_json;
 
-use mtgio_client::api::card::filter::CardFilter;
-use mtgio_client::api::card::filtertypes::CardColor;
-use mtgio_client::api::card::filtertypes::CardType;
-use mtgio_client::api::card::filtertypes::GameFormat;
 use mtgio_client::MtgClient;
 use std::error::Error;
+use mtgio_client::api::card::filter::CardFilter;
+use mtgio_client::api::card::filtertypes::GameFormat;
+use mtgio_client::api::card::filtertypes::CardType;
+use mtgio_client::api::card::filtertypes::CardRarity;
 
 fn main() {
     try_main().unwrap();
@@ -18,29 +18,44 @@ fn try_main() -> Result<(), Box<Error>> {
     //Create new MtgClient
     let api = MtgClient::new(100);
 
-    // Create a filtered cards request
-    let mut get_cards_request = api.cards().all_filtered(
-        CardFilter::builder()
-            .cardtype(CardType::Instant)
-            .colors_or(&[CardColor::Blue, CardColor::Red])
-            .game_format(GameFormat::Standard)
-            .converted_mana_cost(2)
-            .build(),
-    );
+    // Create a unfiltered cards request
+    let mut get_cards_request = api.cards().all();
 
-    //Return 2 cards per request
-    get_cards_request.set_page_size(2);
+    //Start at Page 20
+    get_cards_request.set_page(20);
 
     //collect all cards from the first 5 pages
     for _ in 0..5 {
+        println!("test");
         let cards = get_cards_request.next_page()?.content;
         if cards.is_empty() {
             break;
         }
         filtered_cards.extend(cards);
     }
+    println!("Unfiltered Cards: {:?}", filtered_cards);
 
+    // Create a filtered cards request
+    let mut get_cards_request = api.cards().all_filtered(
+        CardFilter::builder()
+            .game_format(GameFormat::Standard)
+            .cardtypes_or(&[CardType::Instant, CardType::Sorcery])
+            .converted_mana_cost(2)
+            .rarities(&[CardRarity::Rare, CardRarity::MythicRare])
+            .build()
+    );
+
+    //collect all cards filtered from the first 5 pages
+    loop {
+        println!("test");
+        let cards = get_cards_request.next_page()?.content;
+        if cards.is_empty() {
+            break;
+        }
+        filtered_cards.extend(cards);
+    }
     println!("Filtered Cards: {:?}", filtered_cards);
+
     let sets = api.sets().booster("ktk")?.content;
     println!("Random Cards from Booster: {:?}", sets);
     let types = api.types().all()?.content;

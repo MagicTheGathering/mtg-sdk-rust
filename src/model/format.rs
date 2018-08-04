@@ -1,6 +1,11 @@
 #[derive(Serialize, Deserialize, Debug)]
-#[serde(deny_unknown_fields)]
-pub(crate) struct FormatDto {
-    #[serde(default)]
-    pub formats: Vec<String>,
+#[serde(deny_unknown_fields, untagged)]
+pub(crate) enum FormatDto {
+    Error {
+        status: Option<String>,
+        error: String
+    },
+    Formats {
+        formats: Vec<String>,
+    },
 }

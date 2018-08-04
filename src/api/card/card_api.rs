@@ -52,13 +52,18 @@ impl CardApi {
                 .context(MtgIoErrorKind::HttpError)?;
         }
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
-        let card_option = serde_json::from_str::<CardDto>(&body)
+        let card = match serde_json::from_str::<CardDto>(&body)
             .context(MtgIoErrorKind::CardBodyParseError)?
-            .card;
-        Ok(match card_option {
-            Some(card) => Ok(ApiResponse::new(card, response.headers())),
-            None => Err(MtgIoErrorKind::CardNotFound),
-        }?)
+            {
+                CardDto::Card{card} => Ok(card),
+                CardDto::Error{error, status} => {
+                    match status {
+                        Some(status) => Err(MtgIoErrorKind::ApiError {cause: format!("{}: {}", status, error)}),
+                        None => Err(MtgIoErrorKind::ApiError {cause: error})
+                    }
+                }
+            }?;
+        Ok(ApiResponse::new(card, response.headers()))
     }
 }
 
@@ -137,6 +142,7 @@ impl AllCardsRequest {
             Some(client) => Ok(client),
             None => Err(MtgIoErrorKind::ClientDropped),
         }?;
+        println!("GET: {}", &url);
         let mut response = client.get(&url).send().context(MtgIoErrorKind::HttpError)?;
         self.page += 1;
         let headers = response.headers().clone();
@@ -180,9 +186,17 @@ impl AllCardsRequest {
         headers: &Headers,
         body: &str,
     ) -> Result<ApiResponse<Vec<CardDetail>>, Error> {
-        let cards = serde_json::from_str::<CardsDto>(body)
+        let cards = match serde_json::from_str::<CardsDto>(&body)
             .context(MtgIoErrorKind::CardBodyParseError)?
-            .cards;
+            {
+                CardsDto::Cards{cards} => Ok(cards),
+                CardsDto::Error{error, status} => {
+                    match status {
+                        Some(status) => Err(MtgIoErrorKind::ApiError {cause: format!("{}: {}", status, error)}),
+                        None => Err(MtgIoErrorKind::ApiError {cause: error})
+                    }
+                }
+            }?;
         Ok(ApiResponse::new(cards, headers))
     }
 }

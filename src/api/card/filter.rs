@@ -178,22 +178,6 @@ impl CardFilterBuilder {
         self
     }
 
-    /// Every card that has one of the specified converted mana costs will match the filter
-    ///
-    /// ```
-    /// # use mtgio_client::prelude::*;
-    /// let builder = CardFilter::builder();
-    /// let filter = builder.converted_mana_costs(&vec![3,5])
-    ///     .build();
-    /// assert!(filter == CardFilter("cmc=3|5".to_string()));
-    /// ```
-    #[allow(dead_code)]
-    pub fn converted_mana_costs(mut self, cmcs: &[u8]) -> CardFilterBuilder {
-        let values = cmcs.into_iter().map(u8::to_string).join(SEP_OR);
-        self.add_filter("cmc", &values);
-        self
-    }
-
     /// Every card that includes the specified color will match the filter
     ///
     /// ```

@@ -36,9 +36,17 @@ impl TypeApi {
         let all_url = [API_URL, "/types"].join("");
         let mut response = send_response(&all_url, &self.client)?;
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
-        let types = serde_json::from_str::<TypesDto>(&body)
+        let types = match serde_json::from_str::<TypesDto>(&body)
             .context(MtgIoErrorKind::TypeBodyParseError)?
-            .types;
+            {
+                TypesDto::Types {types} => Ok(types),
+                TypesDto::Error{error, status} => {
+                    match status {
+                        Some(status) => Err(MtgIoErrorKind::ApiError {cause: format!("{}: {}", status, error)}),
+                        None => Err(MtgIoErrorKind::ApiError {cause: error})
+                    }
+                }
+            }?;
         Ok(ApiResponse::new(types, response.headers()))
     }
 }
@@ -54,9 +62,17 @@ impl SubtypeApi {
         let all_url = [API_URL, "/subtypes"].join("");
         let mut response = send_response(&all_url, &self.client)?;
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
-        let subtypes = serde_json::from_str::<SubtypesDto>(&body)
+        let subtypes = match serde_json::from_str::<SubtypesDto>(&body)
             .context(MtgIoErrorKind::SubtypeBodyParseError)?
-            .subtypes;
+            {
+                SubtypesDto::Subtypes {subtypes} => Ok(subtypes),
+                SubtypesDto::Error{error, status} => {
+                    match status {
+                        Some(status) => Err(MtgIoErrorKind::ApiError {cause: format!("{}: {}", status, error)}),
+                        None => Err(MtgIoErrorKind::ApiError {cause: error})
+                    }
+                }
+            }?;
         Ok(ApiResponse::new(subtypes, response.headers()))
     }
 }
@@ -72,9 +88,17 @@ impl SupertypeApi {
         let all_url = [API_URL, "/supertypes"].join("");
         let mut response = send_response(&all_url, &self.client)?;
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
-        let supertypes = serde_json::from_str::<SupertypesDto>(&body)
+        let supertypes = match serde_json::from_str::<SupertypesDto>(&body)
             .context(MtgIoErrorKind::SupertypeBodyParseError)?
-            .supertypes;
+            {
+                SupertypesDto::Supertypes {supertypes} => Ok(supertypes),
+                SupertypesDto::Error{error, status} => {
+                    match status {
+                        Some(status) => Err(MtgIoErrorKind::ApiError {cause: format!("{}: {}", status, error)}),
+                        None => Err(MtgIoErrorKind::ApiError {cause: error})
+                    }
+                }
+            }?;
         Ok(ApiResponse::new(supertypes, response.headers()))
     }
 }

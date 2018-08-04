@@ -35,9 +35,17 @@ impl FormatApi {
                 .context(MtgIoErrorKind::HttpError)?;
         }
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
-        let formats = serde_json::from_str::<FormatDto>(&body)
+        let formats = match serde_json::from_str::<FormatDto>(&body)
             .context(MtgIoErrorKind::FormatBodyParseError)?
-            .formats;
+            {
+                FormatDto::Formats {formats} => Ok(formats),
+                FormatDto::Error{error, status} => {
+                    match status {
+                        Some(status) => Err(MtgIoErrorKind::ApiError {cause: format!("{}: {}", status, error)}),
+                        None => Err(MtgIoErrorKind::ApiError {cause: error})
+                    }
+                }
+            }?;
         Ok(ApiResponse::new(formats, response.headers()))
     }
 }

@@ -9,7 +9,7 @@ pub struct MtgIoError {
     inner: Context<MtgIoErrorKind>,
 }
 
-#[derive(Copy, Clone, Eq, PartialEq, Debug, Fail)]
+#[derive(Clone, Eq, PartialEq, Debug, Fail)]
 pub enum MtgIoErrorKind {
     #[fail(display = "The Client has been dropped and is no longer available")]
     ClientDropped,
@@ -33,6 +33,10 @@ pub enum MtgIoErrorKind {
     SupertypeBodyParseError,
     #[fail(display = "Could not parse the response of the formats struct")]
     FormatBodyParseError,
+    #[fail(display = "Error: {}", cause)]
+    ApiError{
+        cause: String
+    },
 }
 
 impl Fail for MtgIoError {
@@ -53,7 +57,7 @@ impl Display for MtgIoError {
 
 impl MtgIoError {
     pub fn kind(&self) -> MtgIoErrorKind {
-        *self.inner.get_context()
+        self.inner.get_context().clone()
     }
 }
 

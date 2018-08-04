@@ -1,16 +1,27 @@
 use chrono::NaiveDate;
 
 #[derive(Serialize, Deserialize, Debug)]
-#[serde(deny_unknown_fields)]
-pub(crate) struct SetsDto {
-    #[serde(default)]
-    pub sets: Vec<SetDetail>,
+#[serde(deny_unknown_fields, untagged)]
+pub(crate) enum SetsDto {
+    Error {
+        status: Option<String>,
+        error: String
+    },
+    Sets {
+        sets: Vec<SetDetail>,
+    },
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-#[serde(deny_unknown_fields)]
-pub(crate) struct SetDto {
-    pub set: Option<SetDetail>,
+#[serde(deny_unknown_fields, untagged)]
+pub(crate) enum SetDto {
+    Error {
+        status: Option<String>,
+        error: String
+    },
+    Set {
+        set: SetDetail,
+    },
 }
 
 #[derive(Serialize, Deserialize, Debug)]

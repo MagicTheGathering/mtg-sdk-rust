@@ -1,14 +1,25 @@
 #[derive(Serialize, Deserialize, Debug)]
-#[serde(deny_unknown_fields)]
-pub(crate) struct CardsDto {
-    #[serde(default)]
-    pub cards: Vec<CardDetail>,
+#[serde(deny_unknown_fields, untagged)]
+pub(crate) enum CardsDto {
+    Error {
+        status: Option<String>,
+        error: String
+    },
+    Cards {
+        cards: Vec<CardDetail>,
+    },
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-#[serde(deny_unknown_fields)]
-pub(crate) struct CardDto {
-    pub card: Option<CardDetail>,
+#[serde(deny_unknown_fields, untagged)]
+pub(crate) enum CardDto {
+    Error {
+        status: Option<String>,
+        error: String
+    },
+    Card {
+        card: CardDetail
+    },
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -62,11 +73,13 @@ pub struct CardDetail {
     pub variations: Vec<u32>,
     pub border: Option<String>,
     #[serde(default)]
-    pub timeshifted: Option<bool>,
+    pub timeshifted: bool,
     pub hand: Option<i32>,
     pub life: Option<i32>,
-    pub reserved: Option<bool>,
-    pub starter: Option<bool>,
+    #[serde(default)]
+    pub reserved: bool,
+    #[serde(default)]
+    pub starter: bool,
     pub source: Option<String>,
     pub id: String,
 }

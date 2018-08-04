@@ -41,9 +41,17 @@ impl SetApi {
                 .context(MtgIoErrorKind::HttpError)?;
         }
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
-        let sets = serde_json::from_str::<SetsDto>(&body)
+        let sets = match serde_json::from_str::<SetsDto>(&body)
             .context(MtgIoErrorKind::SetBodyParseError)?
-            .sets;
+            {
+                SetsDto::Sets{sets} => Ok(sets),
+                SetsDto::Error{error, status} => {
+                    match status {
+                        Some(status) => Err(MtgIoErrorKind::ApiError {cause: format!("{}: {}", status, error)}),
+                        None => Err(MtgIoErrorKind::ApiError {cause: error})
+                    }
+                }
+            }?;
         Ok(ApiResponse::new(sets, response.headers()))
     }
 
@@ -63,9 +71,17 @@ impl SetApi {
                 .context(MtgIoErrorKind::HttpError)?;
         }
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
-        let sets = serde_json::from_str::<SetsDto>(&body)
+        let sets = match serde_json::from_str::<SetsDto>(&body)
             .context(MtgIoErrorKind::SetBodyParseError)?
-            .sets;
+            {
+                SetsDto::Sets{sets} => Ok(sets),
+                SetsDto::Error{error, status} => {
+                    match status {
+                        Some(status) => Err(MtgIoErrorKind::ApiError {cause: format!("{}: {}", status, error)}),
+                        None => Err(MtgIoErrorKind::ApiError {cause: error})
+                    }
+                }
+            }?;
         Ok(ApiResponse::new(sets, response.headers()))
     }
 
@@ -87,13 +103,18 @@ impl SetApi {
                 .context(MtgIoErrorKind::HttpError)?;
         }
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
-        let set_option = serde_json::from_str::<SetDto>(&body)
+        let set = match serde_json::from_str::<SetDto>(&body)
             .context(MtgIoErrorKind::SetBodyParseError)?
-            .set;
-        Ok(match set_option {
-            Some(set) => Ok(ApiResponse::new(set, response.headers())),
-            None => Err(MtgIoErrorKind::SetNotFound),
-        }?)
+            {
+                SetDto::Set{set} => Ok(set),
+                SetDto::Error{error, status} => {
+                    match status {
+                        Some(status) => Err(MtgIoErrorKind::ApiError {cause: format!("{}: {}", status, error)}),
+                        None => Err(MtgIoErrorKind::ApiError {cause: error})
+                    }
+                }
+            }?;
+        Ok(ApiResponse::new(set, response.headers()))
     }
 
     /// Returns a sample booster pack of cards from the specified set
@@ -115,9 +136,17 @@ impl SetApi {
                 .context(MtgIoErrorKind::HttpError)?;
         }
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
-        let cards = serde_json::from_str::<CardsDto>(&body)
-            .context(MtgIoErrorKind::SetBodyParseError)?
-            .cards;
+        let cards = match serde_json::from_str::<CardsDto>(&body)
+            .context(MtgIoErrorKind::CardBodyParseError)?
+            {
+                CardsDto::Cards{cards} => Ok(cards),
+                CardsDto::Error{error, status} => {
+                    match status {
+                        Some(status) => Err(MtgIoErrorKind::ApiError {cause: format!("{}: {}", status, error)}),
+                        None => Err(MtgIoErrorKind::ApiError {cause: error})
+                    }
+                }
+            }?;
         Ok(ApiResponse::new(cards, response.headers()))
     }
 
