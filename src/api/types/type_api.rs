@@ -29,8 +29,8 @@ impl TypeApi {
     /// Returns all types
     #[allow(dead_code)]
     pub fn all(&self) -> Result<ApiResponse<Vec<String>>, Error> {
-        let all_url = [API_URL, "/types"].join("");
-        let mut response = util::send_response(&all_url, &self.client)?;
+        let url = [API_URL, "/types"].join("");
+        let mut response = util::send_response(&url, &self.client)?;
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
         let types = util::retrieve_types_from_body(&body)?;
         Ok(ApiResponse::new(types, response.headers()))
@@ -45,8 +45,8 @@ impl SubtypeApi {
     /// Returns all subtypes
     #[allow(dead_code)]
     pub fn all(&self) -> Result<ApiResponse<Vec<String>>, Error> {
-        let all_url = [API_URL, "/subtypes"].join("");
-        let mut response = util::send_response(&all_url, &self.client)?;
+        let url = [API_URL, "/subtypes"].join("");
+        let mut response = util::send_response(&url, &self.client)?;
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
         let subtypes = util::retrieve_subtypes_from_body(&body)?;
         Ok(ApiResponse::new(subtypes, response.headers()))
@@ -61,8 +61,8 @@ impl SupertypeApi {
     /// Returns all subtypes
     #[allow(dead_code)]
     pub fn all(&self) -> Result<ApiResponse<Vec<String>>, Error> {
-        let all_url = [API_URL, "/supertypes"].join("");
-        let mut response = util::send_response(&all_url, &self.client)?;
+        let url = [API_URL, "/supertypes"].join("");
+        let mut response = util::send_response(&url, &self.client)?;
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
         let supertypes = util::retrieve_supertypes_from_body(&body)?;
         Ok(ApiResponse::new(supertypes, response.headers()))

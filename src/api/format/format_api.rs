@@ -21,8 +21,8 @@ impl FormatApi {
     /// Returns all types
     #[allow(dead_code)]
     pub fn all(&self) -> Result<ApiResponse<Vec<String>>, Error> {
-        let all_url = [API_URL, "/formats"].join("");
-        let mut response = util::send_response(&all_url, &self.client)?;
+        let url = [API_URL, "/formats"].join("");
+        let mut response = util::send_response(&url, &self.client)?;
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
         let formats = util::retrieve_formats_from_body(&body)?;
         Ok(ApiResponse::new(formats, response.headers()))
