@@ -3,7 +3,7 @@
 pub(crate) enum FormatDto {
     Error {
         status: Option<String>,
-        error: String
+        error: String,
     },
     Formats {
         formats: Vec<String>,

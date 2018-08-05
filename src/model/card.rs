@@ -3,7 +3,7 @@
 pub(crate) enum CardsDto {
     Error {
         status: Option<String>,
-        error: String
+        error: String,
     },
     Cards {
         cards: Vec<CardDetail>,
@@ -15,10 +15,10 @@ pub(crate) enum CardsDto {
 pub(crate) enum CardDto {
     Error {
         status: Option<String>,
-        error: String
+        error: String,
     },
     Card {
-        card: CardDetail
+        card: CardDetail,
     },
 }
 

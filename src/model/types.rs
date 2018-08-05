@@ -3,7 +3,7 @@
 pub(crate) enum TypesDto {
     Error {
         status: Option<String>,
-        error: String
+        error: String,
     },
     Types {
         types: Vec<String>,
@@ -15,7 +15,7 @@ pub(crate) enum TypesDto {
 pub(crate) enum SubtypesDto {
     Error {
         status: Option<String>,
-        error: String
+        error: String,
     },
     Subtypes {
         subtypes: Vec<String>,
@@ -27,7 +27,7 @@ pub(crate) enum SubtypesDto {
 pub(crate) enum SupertypesDto {
     Error {
         status: Option<String>,
-        error: String
+        error: String,
     },
     Supertypes {
         supertypes: Vec<String>,

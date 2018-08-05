@@ -43,15 +43,15 @@ impl SetApi {
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
         let sets = match serde_json::from_str::<SetsDto>(&body)
             .context(MtgIoErrorKind::SetBodyParseError)?
-            {
-                SetsDto::Sets{sets} => Ok(sets),
-                SetsDto::Error{error, status} => {
-                    match status {
-                        Some(status) => Err(MtgIoErrorKind::ApiError {cause: format!("{}: {}", status, error)}),
-                        None => Err(MtgIoErrorKind::ApiError {cause: error})
-                    }
-                }
-            }?;
+        {
+            SetsDto::Sets { sets } => Ok(sets),
+            SetsDto::Error { error, status } => match status {
+                Some(status) => Err(MtgIoErrorKind::ApiError {
+                    cause: format!("{}: {}", status, error),
+                }),
+                None => Err(MtgIoErrorKind::ApiError { cause: error }),
+            },
+        }?;
         Ok(ApiResponse::new(sets, response.headers()))
     }
 
@@ -73,15 +73,15 @@ impl SetApi {
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
         let sets = match serde_json::from_str::<SetsDto>(&body)
             .context(MtgIoErrorKind::SetBodyParseError)?
-            {
-                SetsDto::Sets{sets} => Ok(sets),
-                SetsDto::Error{error, status} => {
-                    match status {
-                        Some(status) => Err(MtgIoErrorKind::ApiError {cause: format!("{}: {}", status, error)}),
-                        None => Err(MtgIoErrorKind::ApiError {cause: error})
-                    }
-                }
-            }?;
+        {
+            SetsDto::Sets { sets } => Ok(sets),
+            SetsDto::Error { error, status } => match status {
+                Some(status) => Err(MtgIoErrorKind::ApiError {
+                    cause: format!("{}: {}", status, error),
+                }),
+                None => Err(MtgIoErrorKind::ApiError { cause: error }),
+            },
+        }?;
         Ok(ApiResponse::new(sets, response.headers()))
     }
 
@@ -105,15 +105,15 @@ impl SetApi {
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
         let set = match serde_json::from_str::<SetDto>(&body)
             .context(MtgIoErrorKind::SetBodyParseError)?
-            {
-                SetDto::Set{set} => Ok(set),
-                SetDto::Error{error, status} => {
-                    match status {
-                        Some(status) => Err(MtgIoErrorKind::ApiError {cause: format!("{}: {}", status, error)}),
-                        None => Err(MtgIoErrorKind::ApiError {cause: error})
-                    }
-                }
-            }?;
+        {
+            SetDto::Set { set } => Ok(set),
+            SetDto::Error { error, status } => match status {
+                Some(status) => Err(MtgIoErrorKind::ApiError {
+                    cause: format!("{}: {}", status, error),
+                }),
+                None => Err(MtgIoErrorKind::ApiError { cause: error }),
+            },
+        }?;
         Ok(ApiResponse::new(set, response.headers()))
     }
 
@@ -138,15 +138,15 @@ impl SetApi {
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
         let cards = match serde_json::from_str::<CardsDto>(&body)
             .context(MtgIoErrorKind::CardBodyParseError)?
-            {
-                CardsDto::Cards{cards} => Ok(cards),
-                CardsDto::Error{error, status} => {
-                    match status {
-                        Some(status) => Err(MtgIoErrorKind::ApiError {cause: format!("{}: {}", status, error)}),
-                        None => Err(MtgIoErrorKind::ApiError {cause: error})
-                    }
-                }
-            }?;
+        {
+            CardsDto::Cards { cards } => Ok(cards),
+            CardsDto::Error { error, status } => match status {
+                Some(status) => Err(MtgIoErrorKind::ApiError {
+                    cause: format!("{}: {}", status, error),
+                }),
+                None => Err(MtgIoErrorKind::ApiError { cause: error }),
+            },
+        }?;
         Ok(ApiResponse::new(cards, response.headers()))
     }
 

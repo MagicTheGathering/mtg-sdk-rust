@@ -38,15 +38,15 @@ impl TypeApi {
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
         let types = match serde_json::from_str::<TypesDto>(&body)
             .context(MtgIoErrorKind::TypeBodyParseError)?
-            {
-                TypesDto::Types {types} => Ok(types),
-                TypesDto::Error{error, status} => {
-                    match status {
-                        Some(status) => Err(MtgIoErrorKind::ApiError {cause: format!("{}: {}", status, error)}),
-                        None => Err(MtgIoErrorKind::ApiError {cause: error})
-                    }
-                }
-            }?;
+        {
+            TypesDto::Types { types } => Ok(types),
+            TypesDto::Error { error, status } => match status {
+                Some(status) => Err(MtgIoErrorKind::ApiError {
+                    cause: format!("{}: {}", status, error),
+                }),
+                None => Err(MtgIoErrorKind::ApiError { cause: error }),
+            },
+        }?;
         Ok(ApiResponse::new(types, response.headers()))
     }
 }
@@ -64,15 +64,15 @@ impl SubtypeApi {
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
         let subtypes = match serde_json::from_str::<SubtypesDto>(&body)
             .context(MtgIoErrorKind::SubtypeBodyParseError)?
-            {
-                SubtypesDto::Subtypes {subtypes} => Ok(subtypes),
-                SubtypesDto::Error{error, status} => {
-                    match status {
-                        Some(status) => Err(MtgIoErrorKind::ApiError {cause: format!("{}: {}", status, error)}),
-                        None => Err(MtgIoErrorKind::ApiError {cause: error})
-                    }
-                }
-            }?;
+        {
+            SubtypesDto::Subtypes { subtypes } => Ok(subtypes),
+            SubtypesDto::Error { error, status } => match status {
+                Some(status) => Err(MtgIoErrorKind::ApiError {
+                    cause: format!("{}: {}", status, error),
+                }),
+                None => Err(MtgIoErrorKind::ApiError { cause: error }),
+            },
+        }?;
         Ok(ApiResponse::new(subtypes, response.headers()))
     }
 }
@@ -90,15 +90,15 @@ impl SupertypeApi {
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
         let supertypes = match serde_json::from_str::<SupertypesDto>(&body)
             .context(MtgIoErrorKind::SupertypeBodyParseError)?
-            {
-                SupertypesDto::Supertypes {supertypes} => Ok(supertypes),
-                SupertypesDto::Error{error, status} => {
-                    match status {
-                        Some(status) => Err(MtgIoErrorKind::ApiError {cause: format!("{}: {}", status, error)}),
-                        None => Err(MtgIoErrorKind::ApiError {cause: error})
-                    }
-                }
-            }?;
+        {
+            SupertypesDto::Supertypes { supertypes } => Ok(supertypes),
+            SupertypesDto::Error { error, status } => match status {
+                Some(status) => Err(MtgIoErrorKind::ApiError {
+                    cause: format!("{}: {}", status, error),
+                }),
+                None => Err(MtgIoErrorKind::ApiError { cause: error }),
+            },
+        }?;
         Ok(ApiResponse::new(supertypes, response.headers()))
     }
 }

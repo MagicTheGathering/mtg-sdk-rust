@@ -54,15 +54,15 @@ impl CardApi {
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
         let card = match serde_json::from_str::<CardDto>(&body)
             .context(MtgIoErrorKind::CardBodyParseError)?
-            {
-                CardDto::Card{card} => Ok(card),
-                CardDto::Error{error, status} => {
-                    match status {
-                        Some(status) => Err(MtgIoErrorKind::ApiError {cause: format!("{}: {}", status, error)}),
-                        None => Err(MtgIoErrorKind::ApiError {cause: error})
-                    }
-                }
-            }?;
+        {
+            CardDto::Card { card } => Ok(card),
+            CardDto::Error { error, status } => match status {
+                Some(status) => Err(MtgIoErrorKind::ApiError {
+                    cause: format!("{}: {}", status, error),
+                }),
+                None => Err(MtgIoErrorKind::ApiError { cause: error }),
+            },
+        }?;
         Ok(ApiResponse::new(card, response.headers()))
     }
 }
@@ -188,15 +188,15 @@ impl AllCardsRequest {
     ) -> Result<ApiResponse<Vec<CardDetail>>, Error> {
         let cards = match serde_json::from_str::<CardsDto>(&body)
             .context(MtgIoErrorKind::CardBodyParseError)?
-            {
-                CardsDto::Cards{cards} => Ok(cards),
-                CardsDto::Error{error, status} => {
-                    match status {
-                        Some(status) => Err(MtgIoErrorKind::ApiError {cause: format!("{}: {}", status, error)}),
-                        None => Err(MtgIoErrorKind::ApiError {cause: error})
-                    }
-                }
-            }?;
+        {
+            CardsDto::Cards { cards } => Ok(cards),
+            CardsDto::Error { error, status } => match status {
+                Some(status) => Err(MtgIoErrorKind::ApiError {
+                    cause: format!("{}: {}", status, error),
+                }),
+                None => Err(MtgIoErrorKind::ApiError { cause: error }),
+            },
+        }?;
         Ok(ApiResponse::new(cards, headers))
     }
 }

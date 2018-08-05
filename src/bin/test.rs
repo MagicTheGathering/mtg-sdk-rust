@@ -1,12 +1,12 @@
 extern crate mtgio_client;
 extern crate serde_json;
 
+use mtgio_client::api::card::filter::CardFilter;
+use mtgio_client::api::card::filtertypes::CardRarity;
+use mtgio_client::api::card::filtertypes::CardType;
+use mtgio_client::api::card::filtertypes::GameFormat;
 use mtgio_client::MtgClient;
 use std::error::Error;
-use mtgio_client::api::card::filter::CardFilter;
-use mtgio_client::api::card::filtertypes::GameFormat;
-use mtgio_client::api::card::filtertypes::CardType;
-use mtgio_client::api::card::filtertypes::CardRarity;
 
 fn main() {
     try_main().unwrap();
@@ -42,7 +42,7 @@ fn try_main() -> Result<(), Box<Error>> {
             .cardtypes_or(&[CardType::Instant, CardType::Sorcery])
             .converted_mana_cost(2)
             .rarities(&[CardRarity::Rare, CardRarity::MythicRare])
-            .build()
+            .build(),
     );
 
     //collect all cards filtered from the first 5 pages

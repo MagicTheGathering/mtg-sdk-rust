@@ -5,7 +5,7 @@ use chrono::NaiveDate;
 pub(crate) enum SetsDto {
     Error {
         status: Option<String>,
-        error: String
+        error: String,
     },
     Sets {
         sets: Vec<SetDetail>,
@@ -17,7 +17,7 @@ pub(crate) enum SetsDto {
 pub(crate) enum SetDto {
     Error {
         status: Option<String>,
-        error: String
+        error: String,
     },
     Set {
         set: SetDetail,

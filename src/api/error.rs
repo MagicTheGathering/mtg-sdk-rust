@@ -34,9 +34,7 @@ pub enum MtgIoErrorKind {
     #[fail(display = "Could not parse the response of the formats struct")]
     FormatBodyParseError,
     #[fail(display = "Error: {}", cause)]
-    ApiError{
-        cause: String
-    },
+    ApiError { cause: String },
 }
 
 impl Fail for MtgIoError {
