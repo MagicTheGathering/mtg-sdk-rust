@@ -26,7 +26,6 @@ fn try_main() -> Result<(), Box<Error>> {
 
     //collect all cards from the first 5 pages
     for _ in 0..5 {
-        println!("test");
         let cards = get_cards_request.next_page()?.content;
         if cards.is_empty() {
             break;
@@ -47,7 +46,6 @@ fn try_main() -> Result<(), Box<Error>> {
 
     //collect all cards filtered from the first 5 pages
     loop {
-        println!("test");
         let cards = get_cards_request.next_page()?.content;
         if cards.is_empty() {
             break;

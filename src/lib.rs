@@ -4,6 +4,8 @@ extern crate serde_derive;
 extern crate hyper;
 #[macro_use]
 extern crate failure_derive;
+#[macro_use]
+extern crate log;
 
 extern crate chrono;
 extern crate failure;
@@ -90,7 +92,6 @@ impl MtgClient {
     pub fn supertypes(&self) -> &SupertypeApi {
         &self.supertypes
     }
-
     pub fn formats(&self) -> &FormatApi {
         &self.formats
     }

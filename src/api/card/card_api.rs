@@ -4,15 +4,12 @@ use api::error::MtgIoErrorKind;
 use failure::Error;
 use failure::ResultExt;
 use reqwest::Client;
-use serde_json;
 
 use api::response::ApiResponse;
-use hyper::header::Headers;
 use model::card::CardDetail;
-use model::card::CardDto;
-use model::card::CardsDto;
 use std::sync::Weak;
 
+use api::util;
 use API_URL;
 
 ///Responsible for the calls to the /cards endpoint
@@ -39,30 +36,10 @@ impl CardApi {
 
     /// Returns a specific card by a specific id
     pub fn find(&self, id: u32) -> Result<ApiResponse<CardDetail>, Error> {
-        let find_url = [API_URL, "/cards/", &id.to_string()].join("");
-        let mut response;
-        {
-            let client = match self.client.upgrade() {
-                Some(client) => Ok(client),
-                None => Err(MtgIoErrorKind::ClientDropped),
-            }?;
-            response = client
-                .get(&find_url)
-                .send()
-                .context(MtgIoErrorKind::HttpError)?;
-        }
+        let url = [API_URL, "/cards/", &id.to_string()].join("");
+        let mut response = util::send_response(&url, &self.client)?;
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
-        let card = match serde_json::from_str::<CardDto>(&body)
-            .context(MtgIoErrorKind::CardBodyParseError)?
-        {
-            CardDto::Card { card } => Ok(card),
-            CardDto::Error { error, status } => match status {
-                Some(status) => Err(MtgIoErrorKind::ApiError {
-                    cause: format!("{}: {}", status, error),
-                }),
-                None => Err(MtgIoErrorKind::ApiError { cause: error }),
-            },
-        }?;
+        let card = util::retrieve_card_from_body(&body)?;
         Ok(ApiResponse::new(card, response.headers()))
     }
 }
@@ -138,16 +115,12 @@ impl AllCardsRequest {
     #[allow(dead_code)]
     pub fn next_page(&mut self) -> Result<ApiResponse<Vec<CardDetail>>, Error> {
         let url = self.create_filtered_url();
-        let client = match self.client.upgrade() {
-            Some(client) => Ok(client),
-            None => Err(MtgIoErrorKind::ClientDropped),
-        }?;
-        println!("GET: {}", &url);
-        let mut response = client.get(&url).send().context(MtgIoErrorKind::HttpError)?;
+        let mut response = util::send_response(&url, &self.client)?;
         self.page += 1;
         let headers = response.headers().clone();
         let body = response.text().context(MtgIoErrorKind::CardBodyParseError)?;
-        Ok(self.create_response(&headers, &body)?)
+        let cards = util::retrieve_cards_from_body(&body)?;
+        Ok(ApiResponse::new(cards, &headers))
     }
 
     /// Sets the ordering of the cards
@@ -179,24 +152,5 @@ impl AllCardsRequest {
         let paged_filter_sized = [paged_filter, page_size_filter].join("&");
 
         [self.url.as_str(), paged_filter_sized.as_str()].join("?")
-    }
-
-    fn create_response(
-        &self,
-        headers: &Headers,
-        body: &str,
-    ) -> Result<ApiResponse<Vec<CardDetail>>, Error> {
-        let cards = match serde_json::from_str::<CardsDto>(&body)
-            .context(MtgIoErrorKind::CardBodyParseError)?
-        {
-            CardsDto::Cards { cards } => Ok(cards),
-            CardsDto::Error { error, status } => match status {
-                Some(status) => Err(MtgIoErrorKind::ApiError {
-                    cause: format!("{}: {}", status, error),
-                }),
-                None => Err(MtgIoErrorKind::ApiError { cause: error }),
-            },
-        }?;
-        Ok(ApiResponse::new(cards, headers))
     }
 }

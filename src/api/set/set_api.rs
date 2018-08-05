@@ -3,16 +3,13 @@ use api::set::filter::SetFilter;
 use failure::Error;
 use failure::ResultExt;
 use reqwest::Client;
-use serde_json;
 
 use model::card::CardDetail;
-use model::card::CardsDto;
 use model::set::SetDetail;
-use model::set::SetDto;
-use model::set::SetsDto;
 use std::sync::Weak;
 
 use api::response::ApiResponse;
+use api::util;
 use API_URL;
 
 ///Responsible for the calls to the /cards endpoint
@@ -29,29 +26,9 @@ impl SetApi {
     #[allow(dead_code)]
     pub fn all(&self) -> Result<ApiResponse<Vec<SetDetail>>, Error> {
         let all_url = [API_URL, "/sets"].join("");
-        let mut response;
-        {
-            let client = match self.client.upgrade() {
-                Some(client) => Ok(client),
-                None => Err(MtgIoErrorKind::ClientDropped),
-            }?;
-            response = client
-                .get(&all_url)
-                .send()
-                .context(MtgIoErrorKind::HttpError)?;
-        }
+        let mut response = util::send_response(&all_url, &self.client)?;
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
-        let sets = match serde_json::from_str::<SetsDto>(&body)
-            .context(MtgIoErrorKind::SetBodyParseError)?
-        {
-            SetsDto::Sets { sets } => Ok(sets),
-            SetsDto::Error { error, status } => match status {
-                Some(status) => Err(MtgIoErrorKind::ApiError {
-                    cause: format!("{}: {}", status, error),
-                }),
-                None => Err(MtgIoErrorKind::ApiError { cause: error }),
-            },
-        }?;
+        let sets = util::retrieve_sets_from_body(&body)?;
         Ok(ApiResponse::new(sets, response.headers()))
     }
 
@@ -59,29 +36,9 @@ impl SetApi {
     #[allow(dead_code)]
     pub fn all_filtered(&self, filter: SetFilter) -> Result<ApiResponse<Vec<SetDetail>>, Error> {
         let all_url = SetApi::create_filtered_url(filter);
-        let mut response;
-        {
-            let client = match self.client.upgrade() {
-                Some(client) => Ok(client),
-                None => Err(MtgIoErrorKind::ClientDropped),
-            }?;
-            response = client
-                .get(&all_url)
-                .send()
-                .context(MtgIoErrorKind::HttpError)?;
-        }
+        let mut response = util::send_response(&all_url, &self.client)?;
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
-        let sets = match serde_json::from_str::<SetsDto>(&body)
-            .context(MtgIoErrorKind::SetBodyParseError)?
-        {
-            SetsDto::Sets { sets } => Ok(sets),
-            SetsDto::Error { error, status } => match status {
-                Some(status) => Err(MtgIoErrorKind::ApiError {
-                    cause: format!("{}: {}", status, error),
-                }),
-                None => Err(MtgIoErrorKind::ApiError { cause: error }),
-            },
-        }?;
+        let sets = util::retrieve_sets_from_body(&body)?;
         Ok(ApiResponse::new(sets, response.headers()))
     }
 
@@ -91,29 +48,9 @@ impl SetApi {
         T: Into<&'a str>,
     {
         let find_url = [API_URL, "/sets/", code.into()].join("");
-        let mut response;
-        {
-            let client = match self.client.upgrade() {
-                Some(client) => Ok(client),
-                None => Err(MtgIoErrorKind::ClientDropped),
-            }?;
-            response = client
-                .get(&find_url)
-                .send()
-                .context(MtgIoErrorKind::HttpError)?;
-        }
+        let mut response = util::send_response(&find_url, &self.client)?;
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
-        let set = match serde_json::from_str::<SetDto>(&body)
-            .context(MtgIoErrorKind::SetBodyParseError)?
-        {
-            SetDto::Set { set } => Ok(set),
-            SetDto::Error { error, status } => match status {
-                Some(status) => Err(MtgIoErrorKind::ApiError {
-                    cause: format!("{}: {}", status, error),
-                }),
-                None => Err(MtgIoErrorKind::ApiError { cause: error }),
-            },
-        }?;
+        let set = util::retrieve_set_from_body(&body)?;
         Ok(ApiResponse::new(set, response.headers()))
     }
 
@@ -122,31 +59,11 @@ impl SetApi {
     where
         T: Into<&'a str>,
     {
-        let booster_url = [API_URL, "/sets/", code.into()].join("");
-        let booster_url = [&booster_url, "/booster"].join("");
-        let mut response;
-        {
-            let client = match self.client.upgrade() {
-                Some(client) => Ok(client),
-                None => Err(MtgIoErrorKind::ClientDropped),
-            }?;
-            response = client
-                .get(&booster_url)
-                .send()
-                .context(MtgIoErrorKind::HttpError)?;
-        }
+        let url = [API_URL, "/sets/", code.into()].join("");
+        let url = [&url, "/booster"].join("");
+        let mut response = util::send_response(&url, &self.client)?;
         let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
-        let cards = match serde_json::from_str::<CardsDto>(&body)
-            .context(MtgIoErrorKind::CardBodyParseError)?
-        {
-            CardsDto::Cards { cards } => Ok(cards),
-            CardsDto::Error { error, status } => match status {
-                Some(status) => Err(MtgIoErrorKind::ApiError {
-                    cause: format!("{}: {}", status, error),
-                }),
-                None => Err(MtgIoErrorKind::ApiError { cause: error }),
-            },
-        }?;
+        let cards = util::retrieve_cards_from_body(&body)?;
         Ok(ApiResponse::new(cards, response.headers()))
     }
 
