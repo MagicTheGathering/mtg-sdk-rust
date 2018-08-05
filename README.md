@@ -39,15 +39,16 @@ let mut get_cards_request = api.cards().all();
 //Start at Page 20
 get_cards_request.set_page(20);
 
+let mut unfiltered_cards: Vec<CardDetail>;
 //collect all cards from pages 20 to 25
 for _ in 0..5 {
     let cards = get_cards_request.next_page()?.content;
     if cards.is_empty() {
         break;
     }
-    filtered_cards.extend(cards);
+    unfiltered_cards.extend(cards);
 }
-println!("Unfiltered Cards: {:?}", filtered_cards);
+println!("Unfiltered Cards: {:?}", unfiltered_cards);
 ```
 
 ##### Example: Get all cards matching a filter
@@ -61,7 +62,9 @@ let mut get_cards_request = api.cards().all_filtered(
         .converted_mana_cost(2)
         .rarities(&[CardRarity::Rare, CardRarity::MythicRare])
         .build(),
-        
+    );
+    
+let mut filtered_cards: Vec<CardDetail>;
 //collect all cards matching the filter
 loop {
     let cards = get_cards_request.next_page()?.content;
