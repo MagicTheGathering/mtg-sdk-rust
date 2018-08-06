@@ -1,26 +1,24 @@
-# mtgio-sdk
+# MTG-API Client
 Rust Wrapper around the https://magicthegathering.io/ API
 
 In-depth documentation about the capabilities can be found here: https://docs.magicthegathering.io/
 
 This Wrapper supplies the related methods to call the API and the conversion of the supplied json data into rust objects.
 
+### Documentation
+Documentation can be found on docs.rs: https://docs.rs/mtgapi-client
+
 ### Integration
-There is no way to retrieve this library using crates.io yet, will follow soon. 
 ```
 # Cargo.toml
 [dependencies]
-mtgapi-client = { git = "https://github.com/MagicTheGathering/mtg-sdk-rust" }
+mtgapi-client = "0.1"
 ```
 
 ```
 # main.rs / lib.rs
 extern crate mtgapi_client;
 ```
-
-### Documentation
-
-~ Docs will follow after the crate has been published, you can build them locally by cloning and using 'cargo doc'
 
 ### Usage
 
