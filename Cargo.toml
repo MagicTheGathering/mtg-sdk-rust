@@ -3,9 +3,10 @@ name = "mtgapi-client"
 version = "0.1.0"
 authors = ["Alexander Wendt <alexwgh1+mtgio@gmail.com>"]
 license = "MIT"
+license-file = "LICENSE"
 description = "API bindings for www.magicthegathering.io"
 readme = "README.md"
-keywords = ["mtg", "magic", "gathering", "magic the gathering", "api"]
+keywords = ["mtg", "magic", "gathering", "magic the gathering", "magic-the-gathering", "api"]
 categories = ["api-bindings"]
 
 [dependencies]
