@@ -2,7 +2,8 @@
 name = "mtgapi-client"
 version = "0.1.0"
 authors = ["Alexander Wendt <alexwgh1+mtgio@gmail.com>"]
-license = "MIT"
+homepage = "https://github.com/MagicTheGathering/mtg-sdk-rust"
+repository = "https://github.com/MagicTheGathering/mtg-sdk-rust"
 license-file = "LICENSE"
 description = "API bindings for www.magicthegathering.io"
 readme = "README.md"

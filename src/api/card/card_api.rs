@@ -89,15 +89,15 @@ impl AllCardsRequest {
 
     /// ```no_run
     /// # use std::error::Error;
-    /// # use mtgio_client::prelude::*;
+    /// # use mtgapi_client::prelude::*;
     /// # fn try_main() -> Result<(), Box<Error>> {
     /// let sdk = MtgClient::new(60);
     /// let mut get_cards_request = sdk.cards().all();
     /// let mut cards = Vec::new();
     /// loop {
     ///     let response = get_cards_request.next_page()?;
-    ///     if response.cards.len() == 0 {break}
-    ///     cards.extend(response.cards);
+    ///     if response.content.is_empty() {break}
+    ///     cards.extend(response.content);
     /// }
     /// #
     /// # Ok(())
