@@ -1,5 +1,5 @@
 [package]
-name = "mtgio-client"
+name = "mtgapi-client"
 version = "0.1.0"
 authors = ["Alexander Wendt <alexwgh1+mtgio@gmail.com>"]
 license = "MIT"

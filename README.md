@@ -10,12 +10,12 @@ There is no way to retrieve this library using crates.io yet, will follow soon.
 ```
 # Cargo.toml
 [dependencies]
-mtgio-client = { git = "https://github.com/AlexW-GH/mtgio-client" }
+mtgapi-client = { git = "https://github.com/MagicTheGathering/mtg-sdk-rust" }
 ```
 
 ```
 # main.rs / lib.rs
-extern crate mtgio_client;
+extern crate mtgapi_client;
 ```
 
 ### Documentation
