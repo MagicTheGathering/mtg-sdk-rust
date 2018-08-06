@@ -1,3 +1,4 @@
+///DTO for the endpoints returning multiple types
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(deny_unknown_fields, untagged)]
 pub(crate) enum TypesDto {
@@ -10,6 +11,7 @@ pub(crate) enum TypesDto {
     },
 }
 
+///DTO for the endpoints returning multiple subtypes
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(deny_unknown_fields, untagged)]
 pub(crate) enum SubtypesDto {
@@ -22,6 +24,7 @@ pub(crate) enum SubtypesDto {
     },
 }
 
+///DTO for the endpoints returning multiple supertypes
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(deny_unknown_fields, untagged)]
 pub(crate) enum SupertypesDto {

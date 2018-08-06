@@ -1,4 +1,4 @@
-use api::error::MtgIoErrorKind;
+use api::error::MtgApiErrorKind;
 use api::set::filter::SetFilter;
 use failure::Error;
 use failure::ResultExt;
@@ -12,7 +12,7 @@ use api::response::ApiResponse;
 use api::util;
 use API_URL;
 
-///Responsible for the calls to the /cards endpoint
+///Responsible for the calls to the /sets endpoint
 pub struct SetApi {
     client: Weak<Client>,
 }
@@ -27,7 +27,7 @@ impl SetApi {
     pub fn all(&self) -> Result<ApiResponse<Vec<SetDetail>>, Error> {
         let url = [API_URL, "/sets"].join("");
         let mut response = util::send_response(&url, &self.client)?;
-        let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
+        let body = response.text().context(MtgApiErrorKind::BodyReadError)?;
         let sets = util::retrieve_sets_from_body(&body)?;
         Ok(ApiResponse::new(sets, response.headers()))
     }
@@ -37,7 +37,7 @@ impl SetApi {
     pub fn all_filtered(&self, filter: SetFilter) -> Result<ApiResponse<Vec<SetDetail>>, Error> {
         let url = SetApi::create_filtered_url(filter);
         let mut response = util::send_response(&url, &self.client)?;
-        let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
+        let body = response.text().context(MtgApiErrorKind::BodyReadError)?;
         let sets = util::retrieve_sets_from_body(&body)?;
         Ok(ApiResponse::new(sets, response.headers()))
     }
@@ -49,7 +49,7 @@ impl SetApi {
     {
         let url = [API_URL, "/sets/", code.into()].join("");
         let mut response = util::send_response(&url, &self.client)?;
-        let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
+        let body = response.text().context(MtgApiErrorKind::BodyReadError)?;
         let set = util::retrieve_set_from_body(&body)?;
         Ok(ApiResponse::new(set, response.headers()))
     }
@@ -61,7 +61,7 @@ impl SetApi {
     {
         let url = [API_URL, "/sets/", code.into(), "/booster"].join("");
         let mut response = util::send_response(&url, &self.client)?;
-        let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
+        let body = response.text().context(MtgApiErrorKind::BodyReadError)?;
         let cards = util::retrieve_cards_from_body(&body)?;
         Ok(ApiResponse::new(cards, response.headers()))
     }

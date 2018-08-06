@@ -1,5 +1,6 @@
 use chrono::NaiveDate;
 
+///DTO for the endpoints returning multiple sets
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(deny_unknown_fields, untagged)]
 pub(crate) enum SetsDto {
@@ -12,6 +13,7 @@ pub(crate) enum SetsDto {
     },
 }
 
+///DTO for the endpoints returning a single set
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(deny_unknown_fields, untagged)]
 pub(crate) enum SetDto {

@@ -4,13 +4,14 @@ use failure::Fail;
 use std::fmt;
 use std::fmt::Display;
 
+/// Errors encountered by the Client
 #[derive(Debug)]
-pub struct MtgIoError {
-    inner: Context<MtgIoErrorKind>,
+pub struct MtgApiError {
+    inner: Context<MtgApiErrorKind>,
 }
 
 #[derive(Clone, Eq, PartialEq, Debug, Fail)]
-pub enum MtgIoErrorKind {
+pub enum MtgApiErrorKind {
     #[fail(display = "The Client has been dropped and is no longer available")]
     ClientDropped,
     #[fail(display = "Error calling the API Endpoint")]
@@ -37,7 +38,7 @@ pub enum MtgIoErrorKind {
     ApiError { cause: String },
 }
 
-impl Fail for MtgIoError {
+impl Fail for MtgApiError {
     fn cause(&self) -> Option<&Fail> {
         self.inner.cause()
     }
@@ -47,28 +48,28 @@ impl Fail for MtgIoError {
     }
 }
 
-impl Display for MtgIoError {
+impl Display for MtgApiError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         Display::fmt(&self.inner, f)
     }
 }
 
-impl MtgIoError {
-    pub fn kind(&self) -> MtgIoErrorKind {
+impl MtgApiError {
+    pub fn kind(&self) -> MtgApiErrorKind {
         self.inner.get_context().clone()
     }
 }
 
-impl From<MtgIoErrorKind> for MtgIoError {
-    fn from(kind: MtgIoErrorKind) -> MtgIoError {
-        MtgIoError {
+impl From<MtgApiErrorKind> for MtgApiError {
+    fn from(kind: MtgApiErrorKind) -> MtgApiError {
+        MtgApiError {
             inner: Context::new(kind),
         }
     }
 }
 
-impl From<Context<MtgIoErrorKind>> for MtgIoError {
-    fn from(inner: Context<MtgIoErrorKind>) -> MtgIoError {
-        MtgIoError { inner }
+impl From<Context<MtgApiErrorKind>> for MtgApiError {
+    fn from(inner: Context<MtgApiErrorKind>) -> MtgApiError {
+        MtgApiError { inner }
     }
 }

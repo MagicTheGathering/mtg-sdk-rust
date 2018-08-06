@@ -1,6 +1,6 @@
 use api::card::filter::CardFilter;
 use api::card::filtertypes::CardResponseField;
-use api::error::MtgIoErrorKind;
+use api::error::MtgApiErrorKind;
 use failure::Error;
 use failure::ResultExt;
 use reqwest::Client;
@@ -38,7 +38,7 @@ impl CardApi {
     pub fn find(&self, id: u32) -> Result<ApiResponse<CardDetail>, Error> {
         let url = [API_URL, "/cards/", &id.to_string()].join("");
         let mut response = util::send_response(&url, &self.client)?;
-        let body = response.text().context(MtgIoErrorKind::BodyReadError)?;
+        let body = response.text().context(MtgApiErrorKind::BodyReadError)?;
         let card = util::retrieve_card_from_body(&body)?;
         Ok(ApiResponse::new(card, response.headers()))
     }
@@ -118,7 +118,7 @@ impl AllCardsRequest {
         let mut response = util::send_response(&url, &self.client)?;
         self.page += 1;
         let headers = response.headers().clone();
-        let body = response.text().context(MtgIoErrorKind::CardBodyParseError)?;
+        let body = response.text().context(MtgApiErrorKind::CardBodyParseError)?;
         let cards = util::retrieve_cards_from_body(&body)?;
         Ok(ApiResponse::new(cards, &headers))
     }

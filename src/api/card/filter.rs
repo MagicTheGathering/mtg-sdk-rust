@@ -5,6 +5,7 @@ use std::fmt::Display;
 const SEP_AND: &str = ",";
 const SEP_OR: &str = "|";
 
+/// Builder for filtered card requests
 #[derive(Clone, Debug)]
 pub struct CardFilterBuilder {
     filter: String,

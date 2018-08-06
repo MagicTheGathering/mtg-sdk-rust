@@ -1,3 +1,4 @@
+///DTO for the endpoints returning multiple cards
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(deny_unknown_fields, untagged)]
 pub(crate) enum CardsDto {
@@ -10,6 +11,7 @@ pub(crate) enum CardsDto {
     },
 }
 
+///DTO for the endpoints returning a single cards
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(deny_unknown_fields, untagged)]
 pub(crate) enum CardDto {

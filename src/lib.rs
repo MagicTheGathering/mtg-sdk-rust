@@ -77,21 +77,32 @@ impl MtgClient {
         }
     }
 
+    /// /cards enpoint
     pub fn cards(&self) -> &CardApi {
         &self.cards
     }
+
+    /// /sets enpoint
     pub fn sets(&self) -> &SetApi {
         &self.sets
     }
+
+    /// /types enpoint
     pub fn types(&self) -> &TypeApi {
         &self.types
     }
+
+    /// /subtypes enpoint
     pub fn subtypes(&self) -> &SubtypeApi {
         &self.subtypes
     }
+
+    /// /supertypes enpoint
     pub fn supertypes(&self) -> &SupertypeApi {
         &self.supertypes
     }
+
+    /// /formats enpoint
     pub fn formats(&self) -> &FormatApi {
         &self.formats
     }

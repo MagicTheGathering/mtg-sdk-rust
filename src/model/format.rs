@@ -1,3 +1,4 @@
+///DTO for the endpoints returning multiple formats
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(deny_unknown_fields, untagged)]
 pub(crate) enum FormatDto {

@@ -4,6 +4,7 @@ use std::fmt::Display;
 
 const SEP_OR: &str = "|";
 
+/// Builder for filtered set requests
 #[derive(Clone, Debug)]
 pub struct SetFilterBuilder {
     filter: String,
