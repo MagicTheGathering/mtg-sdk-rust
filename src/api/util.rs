@@ -6,7 +6,7 @@ use model::set::SetDetail;
 use reqwest::Client;
 use reqwest::Response;
 use serde_json;
-use std::sync::Weak;
+use std::rc::Weak;
 
 pub(crate) fn send_response(url: &str, client: &Weak<Client>) -> Result<Response, Error> {
     let client = match client.upgrade() {

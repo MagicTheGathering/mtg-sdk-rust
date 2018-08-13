@@ -22,8 +22,8 @@ use api::types::type_api::SubtypeApi;
 use api::types::type_api::SupertypeApi;
 use api::types::type_api::TypeApi;
 use reqwest::Client;
-use std::sync::Arc;
 use std::time::Duration;
+use std::rc::Rc;
 
 pub mod api;
 pub mod model;
@@ -41,7 +41,7 @@ pub mod prelude {
 /// The MTG.io SDK, use this to access the various api calls
 #[allow(dead_code)]
 pub struct MtgClient {
-    client: Arc<Client>,
+    client: Rc<Client>,
     pub cards: CardApi,
     pub sets: SetApi,
     pub types: TypeApi,
@@ -59,18 +59,18 @@ impl MtgClient {
     /// Creates a new MTG.io SDK Struct with an alternate URL
     /// "https://api.magicthegathering.io/v1" is the default
     pub fn new_with_url(url: &str, timeout: u64) -> MtgClient {
-        let client = Arc::new(
+        let client = Rc::new(
             reqwest::Client::builder()
                 .timeout(Duration::from_secs(timeout))
                 .build()
                 .unwrap(),
         );
-        let cards = CardApi::new(Arc::downgrade(&client), url.to_string());
-        let sets = SetApi::new(Arc::downgrade(&client), url.to_string());
-        let types = TypeApi::new(Arc::downgrade(&client), url.to_string());
-        let subtypes = SubtypeApi::new(Arc::downgrade(&client), url.to_string());
-        let supertypes = SupertypeApi::new(Arc::downgrade(&client), url.to_string());
-        let formats = FormatApi::new(Arc::downgrade(&client), url.to_string());
+        let cards = CardApi::new(Rc::downgrade(&client), url.to_string());
+        let sets = SetApi::new(Rc::downgrade(&client), url.to_string());
+        let types = TypeApi::new(Rc::downgrade(&client), url.to_string());
+        let subtypes = SubtypeApi::new(Rc::downgrade(&client), url.to_string());
+        let supertypes = SupertypeApi::new(Rc::downgrade(&client), url.to_string());
+        let formats = FormatApi::new(Rc::downgrade(&client), url.to_string());
 
         MtgClient {
             client,

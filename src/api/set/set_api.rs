@@ -6,7 +6,7 @@ use reqwest::Client;
 
 use model::card::CardDetail;
 use model::set::SetDetail;
-use std::sync::Weak;
+use std::rc::Weak;
 
 use api::response::ApiResponse;
 use api::util;

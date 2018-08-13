@@ -3,7 +3,7 @@ use failure::Error;
 use failure::ResultExt;
 use reqwest::Client;
 
-use std::sync::Weak;
+use std::rc::Weak;
 
 use api::response::ApiResponse;
 use api::util;
