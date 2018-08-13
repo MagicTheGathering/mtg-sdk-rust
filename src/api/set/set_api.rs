@@ -10,22 +10,22 @@ use std::sync::Weak;
 
 use api::response::ApiResponse;
 use api::util;
-use API_URL;
 
 ///Responsible for the calls to the /sets endpoint
 pub struct SetApi {
     client: Weak<Client>,
+    url: String,
 }
 
 impl SetApi {
-    pub(crate) fn new(client: Weak<Client>) -> SetApi {
-        SetApi { client }
+    pub(crate) fn new(client: Weak<Client>, url: String) -> SetApi {
+        SetApi { client, url }
     }
 
     /// Returns all Sets
     #[allow(dead_code)]
     pub fn all(&self) -> Result<ApiResponse<Vec<SetDetail>>, Error> {
-        let url = [API_URL, "/sets"].join("");
+        let url = [&self.url, "/sets"].join("");
         let mut response = util::send_response(&url, &self.client)?;
         let body = response.text().context(MtgApiErrorKind::BodyReadError)?;
         let sets = util::retrieve_sets_from_body(&body)?;
@@ -35,7 +35,7 @@ impl SetApi {
     /// Returns all sets matching the supplied filter
     #[allow(dead_code)]
     pub fn all_filtered(&self, filter: SetFilter) -> Result<ApiResponse<Vec<SetDetail>>, Error> {
-        let url = SetApi::create_filtered_url(filter);
+        let url = SetApi::create_filtered_url(&self.url, filter);
         let mut response = util::send_response(&url, &self.client)?;
         let body = response.text().context(MtgApiErrorKind::BodyReadError)?;
         let sets = util::retrieve_sets_from_body(&body)?;
@@ -47,7 +47,7 @@ impl SetApi {
     where
         T: Into<&'a str>,
     {
-        let url = [API_URL, "/sets/", code.into()].join("");
+        let url = [&self.url, "/sets/", code.into()].join("");
         let mut response = util::send_response(&url, &self.client)?;
         let body = response.text().context(MtgApiErrorKind::BodyReadError)?;
         let set = util::retrieve_set_from_body(&body)?;
@@ -59,15 +59,15 @@ impl SetApi {
     where
         T: Into<&'a str>,
     {
-        let url = [API_URL, "/sets/", code.into(), "/booster"].join("");
+        let url = [&self.url, "/sets/", code.into(), "/booster"].join("");
         let mut response = util::send_response(&url, &self.client)?;
         let body = response.text().context(MtgApiErrorKind::BodyReadError)?;
         let cards = util::retrieve_cards_from_body(&body)?;
         Ok(ApiResponse::new(cards, response.headers()))
     }
 
-    fn create_filtered_url(filter: SetFilter) -> String {
-        let url = [API_URL, "/sets"].join("");
+    fn create_filtered_url(api_url: &str, filter: SetFilter) -> String {
+        let url = [api_url, "/sets"].join("");
         if filter.0.is_empty() {
             url
         } else {

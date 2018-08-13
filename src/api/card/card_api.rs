@@ -10,33 +10,33 @@ use model::card::CardDetail;
 use std::sync::Weak;
 
 use api::util;
-use API_URL;
 
 ///Responsible for the calls to the /cards endpoint
 pub struct CardApi {
     client: Weak<Client>,
+    url: String,
 }
 
 impl CardApi {
-    pub(crate) fn new(client: Weak<Client>) -> CardApi {
-        CardApi { client }
+    pub(crate) fn new(client: Weak<Client>, url: String) -> CardApi {
+        CardApi { client, url }
     }
 
     /// Returns a Request Object to fetch all cards
     #[allow(dead_code)]
     pub fn all(&self) -> Box<AllCardsRequest> {
-        AllCardsRequest::new(self.client.clone(), 100)
+        AllCardsRequest::new(self.client.clone(), &self.url, 100)
     }
 
     /// Returns a Request Object to fetch all cards with a filter
     #[allow(dead_code)]
     pub fn all_filtered(&self, filter: CardFilter) -> Box<AllCardsRequest> {
-        AllCardsRequest::new_filtered(self.client.clone(), 100, filter)
+        AllCardsRequest::new_filtered(self.client.clone(), &self.url, 100, filter)
     }
 
     /// Returns a specific card by a specific id
     pub fn find(&self, id: u32) -> Result<ApiResponse<CardDetail>, Error> {
-        let url = [API_URL, "/cards/", &id.to_string()].join("");
+        let url = [&self.url, "/cards/", &id.to_string()].join("");
         let mut response = util::send_response(&url, &self.client)?;
         let body = response.text().context(MtgApiErrorKind::BodyReadError)?;
         let card = util::retrieve_card_from_body(&body)?;
@@ -56,8 +56,8 @@ pub struct AllCardsRequest {
 }
 
 impl AllCardsRequest {
-    fn new(client: Weak<Client>, page_size: u32) -> Box<AllCardsRequest> {
-        let url = [API_URL, "cards"].join("/");
+    fn new(client: Weak<Client>, api_url: &str, page_size: u32) -> Box<AllCardsRequest> {
+        let url = [api_url, "cards"].join("/");
         Box::new(AllCardsRequest {
             page: 1,
             client,
@@ -70,10 +70,11 @@ impl AllCardsRequest {
 
     fn new_filtered(
         client: Weak<Client>,
+        api_url: &str,
         page_size: u32,
         filter: CardFilter,
     ) -> Box<AllCardsRequest> {
-        let url = [API_URL, "cards"].join("/");
+        let url = [api_url, "cards"].join("/");
         Box::new(AllCardsRequest {
             page: 1,
             client,

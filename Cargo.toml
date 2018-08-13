@@ -1,11 +1,11 @@
 [package]
 name = "mtgapi-client"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Alexander Wendt <alexwgh1+mtgio@gmail.com>"]
 homepage = "https://github.com/MagicTheGathering/mtg-sdk-rust"
 repository = "https://github.com/MagicTheGathering/mtg-sdk-rust"
 documentation = "https://docs.rs/mtgapi-client"
-license-file = "LICENSE"
+license = "MIT"
 description = "API bindings for www.magicthegathering.io"
 readme = "README.md"
 keywords = ["mtg", "magic", "gathering", "magic-the-gathering", "api"]
@@ -20,5 +20,5 @@ itertools = "0.7"
 hyper = "0.11"
 failure = "0.1"
 failure_derive = "0.1"
-chrono = { version = "0.4.5", features = ["serde"] }
-log = "0.4.3"
+chrono = { version = "0.4", features = ["serde"] }
+log = "0.4"
