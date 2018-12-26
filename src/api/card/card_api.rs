@@ -1,15 +1,15 @@
-use api::card::filter::CardFilter;
-use api::card::filtertypes::CardResponseField;
-use api::error::MtgApiErrorKind;
+use crate::api::card::filter::CardFilter;
+use crate::api::card::filtertypes::CardResponseField;
+use crate::api::error::MtgApiErrorKind;
 use failure::Error;
 use failure::ResultExt;
 use reqwest::Client;
 
-use api::response::ApiResponse;
-use model::card::CardDetail;
+use crate::api::response::ApiResponse;
+use crate::model::card::CardDetail;
 use std::rc::Weak;
 
-use api::util;
+use crate::api::util;
 
 ///Responsible for the calls to the /cards endpoint
 pub struct CardApi {

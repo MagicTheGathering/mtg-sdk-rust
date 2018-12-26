@@ -2,7 +2,6 @@
 extern crate serde_derive;
 #[macro_use]
 extern crate hyper;
-#[macro_use]
 extern crate failure_derive;
 #[macro_use]
 extern crate log;
@@ -14,13 +13,13 @@ extern crate reqwest;
 extern crate serde;
 extern crate serde_json;
 
-pub use api::card::card_api::CardApi as cards;
-use api::card::card_api::CardApi;
-use api::format::format_api::FormatApi;
-use api::set::set_api::SetApi;
-use api::types::type_api::SubtypeApi;
-use api::types::type_api::SupertypeApi;
-use api::types::type_api::TypeApi;
+pub use crate::api::card::card_api::CardApi as cards;
+use crate::api::card::card_api::CardApi;
+use crate::api::format::format_api::FormatApi;
+use crate::api::set::set_api::SetApi;
+use crate::api::types::type_api::SubtypeApi;
+use crate::api::types::type_api::SupertypeApi;
+use crate::api::types::type_api::TypeApi;
 use reqwest::Client;
 use std::time::Duration;
 use std::rc::Rc;
@@ -29,11 +28,11 @@ pub mod api;
 pub mod model;
 
 pub mod prelude {
-    pub use api::card::filter::*;
-    pub use api::card::filtertypes::*;
-    pub use api::set::filter::*;
-    pub use api::set::filtertypes::*;
-    pub use MtgClient;
+    pub use crate::api::card::filter::*;
+    pub use crate::api::card::filtertypes::*;
+    pub use crate::api::set::filter::*;
+    pub use crate::api::set::filtertypes::*;
+    pub use crate::MtgClient;
 }
 
 //const API_URL: &str = "https://api.magicthegathering.io/v1";

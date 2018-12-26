@@ -1,12 +1,12 @@
-use api::error::MtgApiErrorKind;
+use crate::api::error::MtgApiErrorKind;
 use failure::Error;
 use failure::ResultExt;
 use reqwest::Client;
 
 use std::rc::Weak;
 
-use api::response::ApiResponse;
-use api::util;
+use crate::api::response::ApiResponse;
+use crate::api::util;
 
 ///Responsible for the calls to the /formats endpoint
 pub struct FormatApi {

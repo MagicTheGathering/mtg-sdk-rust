@@ -1,15 +1,15 @@
-use api::error::MtgApiErrorKind;
-use api::set::filter::SetFilter;
+use crate::api::error::MtgApiErrorKind;
+use crate::api::set::filter::SetFilter;
 use failure::Error;
 use failure::ResultExt;
 use reqwest::Client;
 
-use model::card::CardDetail;
-use model::set::SetDetail;
+use crate::model::card::CardDetail;
+use crate::model::set::SetDetail;
 use std::rc::Weak;
 
-use api::response::ApiResponse;
-use api::util;
+use crate::api::response::ApiResponse;
+use crate::api::util;
 
 ///Responsible for the calls to the /sets endpoint
 pub struct SetApi {
