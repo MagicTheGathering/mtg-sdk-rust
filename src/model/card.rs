@@ -20,7 +20,7 @@ pub(crate) enum CardDto {
         error: String,
     },
     Card {
-        card: CardDetail,
+        card: Box<CardDetail>,
     },
 }
 

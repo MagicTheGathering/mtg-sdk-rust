@@ -83,7 +83,7 @@ impl SetFilterBuilder {
     where
         T: Display,
     {
-        let values = names.into_iter().join(SEP_OR);
+        let values = names.iter().join(SEP_OR);
         self.add_filter("name", &values);
         self
     }
@@ -114,7 +114,7 @@ impl SetFilterBuilder {
     /// ```
     #[allow(dead_code)]
     pub fn blocks(mut self, blocks: &[SetBlock]) -> SetFilterBuilder {
-        let values = blocks.into_iter().map(|value| value.as_str()).join(SEP_OR);
+        let values = blocks.iter().map(|value| value.as_str()).join(SEP_OR);
         self.add_filter("block", &values);
         self
     }
@@ -126,7 +126,7 @@ impl SetFilterBuilder {
         if !self.filter.is_empty() {
             self.filter = [&self.filter, "&"].join("");
         }
-        self.filter = self.filter.clone() + &[key, values].into_iter().join("=")
+        self.filter = self.filter.clone() + &[key, values].iter().join("=")
     }
 }
 

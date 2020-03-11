@@ -40,7 +40,7 @@ impl CardApi {
         let mut response = util::send_response(&url, &self.client)?;
         let body = response.text().context(MtgApiErrorKind::BodyReadError)?;
         let card = util::retrieve_card_from_body(&body)?;
-        Ok(ApiResponse::new(card, response.headers()))
+        Ok(ApiResponse::new(*card, response.headers()))
     }
 }
 
@@ -91,7 +91,7 @@ impl AllCardsRequest {
     /// ```no_run
     /// # use std::error::Error;
     /// # use mtgapi_client::prelude::*;
-    /// # fn try_main() -> Result<(), Box<Error>> {
+    /// # fn get_some_Cards() -> Result<(), Box<Error>> {
     /// let sdk = MtgClient::new(60);
     /// let mut get_cards_request = sdk.cards().all();
     /// let mut cards = Vec::new();
@@ -104,9 +104,6 @@ impl AllCardsRequest {
     /// # Ok(())
     /// # }
     /// #
-    /// # fn main() {
-    /// #     try_main().unwrap();
-    /// # }
     /// ```
     /// # Errors
     ///
