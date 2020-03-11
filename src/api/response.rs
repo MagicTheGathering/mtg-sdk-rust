@@ -1,9 +1,4 @@
-use hyper::Headers;
-header! { (PageSizeHeader, "Page-Size") => [u32] }
-header! { (CountHeader, "Count") => [u32] }
-header! { (TotalCountHeader, "Total-Count") => [u32] }
-header! { (RatelimitLimitHeader, "Ratelimit-Limit") => [u32] }
-header! { (RatelimitRemainingHeader, "Ratelimit-Remaining") => [u32] }
+use reqwest::header::HeaderMap;
 
 /// Response returned by the Cards API
 #[allow(dead_code)]
@@ -17,14 +12,12 @@ pub struct ApiResponse<T> {
 }
 
 impl<T> ApiResponse<T> {
-    pub(crate) fn new(content: T, headers: &Headers) -> ApiResponse<T> {
-        let page_size = headers.get::<PageSizeHeader>().map(|header| header.0);
-        let count = headers.get::<CountHeader>().map(|header| header.0);
-        let total_count = headers.get::<TotalCountHeader>().map(|header| header.0);
-        let ratelimit_limit = headers.get::<RatelimitLimitHeader>().map(|header| header.0);
-        let ratelimit_remaining = headers
-            .get::<RatelimitRemainingHeader>()
-            .map(|header| header.0);
+    pub(crate) fn new(content: T, headers: &HeaderMap) -> ApiResponse<T> {
+        let page_size: Option<u32> = if headers.contains_key("Page-Size") { Some(headers.get("Page-Size").unwrap().to_str().expect("Error parsing Page-Size Header").parse::<u32>().expect("Error converting str to u32")) } else { None };
+        let count: Option<u32> = if headers.contains_key("Count") { Some(headers.get("Count").unwrap().to_str().expect("Error parsing Count Header").parse::<u32>().expect("Error converting str to u32")) } else { None };
+        let total_count: Option<u32> = if headers.contains_key("Total-Count") { Some(headers.get("Total-Count").unwrap().to_str().expect("Error parsing Total-Count Header").parse::<u32>().expect("Error converting str to u32")) } else { None };
+        let ratelimit_limit: Option<u32> = if headers.contains_key("Ratelimit-Limit") { Some(headers.get("Ratelimit-Limit").unwrap().to_str().expect("Error parsing Ratelimit-Limit Header").parse::<u32>().expect("Error converting str to u32")) } else { None };
+        let ratelimit_remaining = if headers.contains_key("Ratelimit-Remaining") { Some(headers.get("Ratelimit-Remaining").unwrap().to_str().expect("Error parsing Ratelimit-Remaining Header").parse::<u32>().expect("Error converting str to u32")) } else { None };
         ApiResponse {
             content,
             page_size,
