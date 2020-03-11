@@ -1,6 +1,6 @@
 #[macro_use]
 extern crate serde_derive;
-extern crate hyper;
+extern crate hyper_rustls;
 extern crate failure_derive;
 #[macro_use]
 extern crate log;
