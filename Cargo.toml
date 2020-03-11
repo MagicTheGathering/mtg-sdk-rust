@@ -10,6 +10,7 @@ description = "API bindings for www.magicthegathering.io"
 readme = "README.md"
 keywords = ["mtg", "magic", "gathering", "magic-the-gathering", "api"]
 categories = ["api-bindings"]
+edition = "2018"
 
 [dependencies]
 reqwest = "0.9.24"
