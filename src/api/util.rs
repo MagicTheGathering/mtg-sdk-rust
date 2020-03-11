@@ -24,21 +24,21 @@ pub(crate) fn retrieve_cards_from_body(body: &str) -> Result<Vec<CardDetail>, Er
         CardsDto::Error { error, status } => match status {
             Some(status) => Err(MtgApiErrorKind::ApiError {
                 cause: format!("{}: {}", status, error),
-            })?,
-            None => Err(MtgApiErrorKind::ApiError { cause: error })?,
+            }.into()),
+            None => Err(MtgApiErrorKind::ApiError { cause: error }.into()),
         },
     }
 }
 
-pub(crate) fn retrieve_card_from_body(body: &str) -> Result<CardDetail, Error> {
+pub(crate) fn retrieve_card_from_body(body: &str) -> Result<Box<CardDetail>, Error> {
     use crate::model::card::CardDto;
     match serde_json::from_str::<CardDto>(&body).context(MtgApiErrorKind::CardBodyParseError)? {
         CardDto::Card { card } => Ok(card),
         CardDto::Error { error, status } => match status {
             Some(status) => Err(MtgApiErrorKind::ApiError {
                 cause: format!("{}: {}", status, error),
-            })?,
-            None => Err(MtgApiErrorKind::ApiError { cause: error })?,
+            }.into()),
+            None => Err(MtgApiErrorKind::ApiError { cause: error }.into()),
         },
     }
 }
@@ -50,21 +50,21 @@ pub(crate) fn retrieve_sets_from_body(body: &str) -> Result<Vec<SetDetail>, Erro
         SetsDto::Error { error, status } => match status {
             Some(status) => Err(MtgApiErrorKind::ApiError {
                 cause: format!("{}: {}", status, error),
-            })?,
-            None => Err(MtgApiErrorKind::ApiError { cause: error })?,
+            }.into()),
+            None => Err(MtgApiErrorKind::ApiError { cause: error }.into()),
         },
     }
 }
 
-pub(crate) fn retrieve_set_from_body(body: &str) -> Result<SetDetail, Error> {
+pub(crate) fn retrieve_set_from_body(body: &str) -> Result<Box<SetDetail>, Error> {
     use crate::model::set::SetDto;
     match serde_json::from_str::<SetDto>(&body).context(MtgApiErrorKind::SetBodyParseError)? {
         SetDto::Set { set } => Ok(set),
         SetDto::Error { error, status } => match status {
             Some(status) => Err(MtgApiErrorKind::ApiError {
                 cause: format!("{}: {}", status, error),
-            })?,
-            None => Err(MtgApiErrorKind::ApiError { cause: error })?,
+            }.into()),
+            None => Err(MtgApiErrorKind::ApiError { cause: error }.into()),
         },
     }
 }
@@ -76,8 +76,8 @@ pub(crate) fn retrieve_formats_from_body(body: &str) -> Result<Vec<String>, Erro
         FormatDto::Error { error, status } => match status {
             Some(status) => Err(MtgApiErrorKind::ApiError {
                 cause: format!("{}: {}", status, error),
-            })?,
-            None => Err(MtgApiErrorKind::ApiError { cause: error })?,
+            }.into()),
+            None => Err(MtgApiErrorKind::ApiError { cause: error }.into()),
         },
     }
 }
@@ -89,8 +89,8 @@ pub(crate) fn retrieve_types_from_body(body: &str) -> Result<Vec<String>, Error>
         TypesDto::Error { error, status } => match status {
             Some(status) => Err(MtgApiErrorKind::ApiError {
                 cause: format!("{}: {}", status, error),
-            })?,
-            None => Err(MtgApiErrorKind::ApiError { cause: error })?,
+            }.into()),
+            None => Err(MtgApiErrorKind::ApiError { cause: error }.into()),
         },
     }
 }
@@ -102,8 +102,8 @@ pub(crate) fn retrieve_subtypes_from_body(body: &str) -> Result<Vec<String>, Err
         SubtypesDto::Error { error, status } => match status {
             Some(status) => Err(MtgApiErrorKind::ApiError {
                 cause: format!("{}: {}", status, error),
-            })?,
-            None => Err(MtgApiErrorKind::ApiError { cause: error })?,
+            }.into()),
+            None => Err(MtgApiErrorKind::ApiError { cause: error }.into()),
         },
     }
 }
@@ -116,8 +116,8 @@ pub(crate) fn retrieve_supertypes_from_body(body: &str) -> Result<Vec<String>, E
         SupertypesDto::Error { error, status } => match status {
             Some(status) => Err(MtgApiErrorKind::ApiError {
                 cause: format!("{}: {}", status, error),
-            })?,
-            None => Err(MtgApiErrorKind::ApiError { cause: error })?,
+            }.into()),
+            None => Err(MtgApiErrorKind::ApiError { cause: error }.into()),
         },
     }
 }

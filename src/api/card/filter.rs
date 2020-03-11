@@ -85,7 +85,7 @@ impl CardFilterBuilder {
     where
         T: Display,
     {
-        let values = names.into_iter().join(SEP_OR);
+        let values = names.iter().join(SEP_OR);
         self.add_filter("name", &values);
         self
     }
@@ -127,7 +127,7 @@ impl CardFilterBuilder {
     where
         T: Display,
     {
-        let values = names.into_iter().join(SEP_OR);
+        let values = names.iter().join(SEP_OR);
         self.add_filter("name", &values);
         self.add_filter("language", &language.as_str());
         self
@@ -159,7 +159,7 @@ impl CardFilterBuilder {
     /// ```
     #[allow(dead_code)]
     pub fn layouts(mut self, layouts: &[CardLayout]) -> CardFilterBuilder {
-        let values = layouts.into_iter().map(|value| value.as_str()).join(SEP_OR);
+        let values = layouts.iter().map(|value| value.as_str()).join(SEP_OR);
         self.add_filter("layout", &values);
         self
     }
@@ -205,7 +205,7 @@ impl CardFilterBuilder {
     /// ```
     #[allow(dead_code)]
     pub fn colors_or(mut self, colors: &[CardColor]) -> CardFilterBuilder {
-        let values = colors.into_iter().map(|value| value.as_str()).join(SEP_OR);
+        let values = colors.iter().map(|value| value.as_str()).join(SEP_OR);
         self.add_filter("colors", &values);
         self
     }
@@ -221,7 +221,7 @@ impl CardFilterBuilder {
     /// ```
     #[allow(dead_code)]
     pub fn colors_and(mut self, colors: &[CardColor]) -> CardFilterBuilder {
-        let values = colors.into_iter().map(|value| value.as_str()).join(SEP_AND);
+        let values = colors.iter().map(|value| value.as_str()).join(SEP_AND);
         self.add_filter("colors", &values);
         self
     }
@@ -256,7 +256,7 @@ impl CardFilterBuilder {
         color_identities: &[CardColorIdentity],
     ) -> CardFilterBuilder {
         let values = color_identities
-            .into_iter()
+            .iter()
             .map(|value| value.as_str())
             .join(SEP_OR);
         self.add_filter("colorIdentity", &values);
@@ -278,7 +278,7 @@ impl CardFilterBuilder {
         color_identities: &[CardColorIdentity],
     ) -> CardFilterBuilder {
         let values = color_identities
-            .into_iter()
+            .iter()
             .map(|value| value.as_str())
             .join(SEP_AND);
         self.add_filter("colorIdentity", &values);
@@ -317,7 +317,7 @@ impl CardFilterBuilder {
     where
         T: Display,
     {
-        let values = fulltypes.into_iter().join(SEP_OR);
+        let values = fulltypes.iter().join(SEP_OR);
         self.add_filter("types", &values);
         self
     }
@@ -336,7 +336,7 @@ impl CardFilterBuilder {
     where
         T: Display,
     {
-        let values = fulltypes.into_iter().join(SEP_AND);
+        let values = fulltypes.iter().join(SEP_AND);
         self.add_filter("types", &values);
         self
     }
@@ -368,7 +368,7 @@ impl CardFilterBuilder {
     #[allow(dead_code)]
     pub fn supertypes_or(mut self, supertypes: &[CardSuperType]) -> CardFilterBuilder {
         let values = supertypes
-            .into_iter()
+            .iter()
             .map(|value| value.as_str())
             .join(SEP_OR);
         self.add_filter("supertypes", &values);
@@ -387,7 +387,7 @@ impl CardFilterBuilder {
     #[allow(dead_code)]
     pub fn supertypes_and(mut self, supertypes: &[CardSuperType]) -> CardFilterBuilder {
         let values = supertypes
-            .into_iter()
+            .iter()
             .map(|value| value.as_str())
             .join(SEP_AND);
         self.add_filter("supertypes", &values);
@@ -421,7 +421,7 @@ impl CardFilterBuilder {
     #[allow(dead_code)]
     pub fn cardtypes_or(mut self, cardtypes: &[CardType]) -> CardFilterBuilder {
         let values = cardtypes
-            .into_iter()
+            .iter()
             .map(|value| value.as_str())
             .join(SEP_OR);
         self.add_filter("types", &values);
@@ -440,7 +440,7 @@ impl CardFilterBuilder {
     #[allow(dead_code)]
     pub fn cardtypes_and(mut self, cardtypes: &[CardType]) -> CardFilterBuilder {
         let values = cardtypes
-            .into_iter()
+            .iter()
             .map(|value| value.as_str())
             .join(SEP_AND);
         self.add_filter("types", &values);
@@ -479,7 +479,7 @@ impl CardFilterBuilder {
     where
         T: Display,
     {
-        let values = subtypes.into_iter().join(SEP_OR);
+        let values = subtypes.iter().join(SEP_OR);
         self.add_filter("subtypes", &values);
         self
     }
@@ -498,7 +498,7 @@ impl CardFilterBuilder {
     where
         T: Display,
     {
-        let values = subtypes.into_iter().join(SEP_AND);
+        let values = subtypes.iter().join(SEP_AND);
         self.add_filter("subtypes", &values);
         self
     }
@@ -530,7 +530,7 @@ impl CardFilterBuilder {
     #[allow(dead_code)]
     pub fn rarities(mut self, rarities: &[CardRarity]) -> CardFilterBuilder {
         let values = rarities
-            .into_iter()
+            .iter()
             .map(|value| value.as_str())
             .join(SEP_OR);
         self.add_filter("rarity", &values);
@@ -569,7 +569,7 @@ impl CardFilterBuilder {
     where
         T: Display,
     {
-        let values = sets.into_iter().join(SEP_OR);
+        let values = sets.iter().join(SEP_OR);
         self.add_filter("set", &values);
         self
     }
@@ -606,7 +606,7 @@ impl CardFilterBuilder {
     where
         T: Display,
     {
-        let values = sets.into_iter().join(SEP_OR);
+        let values = sets.iter().join(SEP_OR);
         self.add_filter("setName", &values);
         self
     }
@@ -643,7 +643,7 @@ impl CardFilterBuilder {
     where
         T: Display,
     {
-        let values = texts.into_iter().join(SEP_OR);
+        let values = texts.iter().join(SEP_OR);
         self.add_filter("text", &values);
         self
     }
@@ -662,7 +662,7 @@ impl CardFilterBuilder {
     where
         T: Display,
     {
-        let values = texts.into_iter().join(SEP_AND);
+        let values = texts.iter().join(SEP_AND);
         self.add_filter("text", &values);
         self
     }
@@ -699,7 +699,7 @@ impl CardFilterBuilder {
     where
         T: Display,
     {
-        let values = flavors.into_iter().join(SEP_OR);
+        let values = flavors.iter().join(SEP_OR);
         self.add_filter("flavor", &values);
         self
     }
@@ -718,7 +718,7 @@ impl CardFilterBuilder {
     where
         T: Display,
     {
-        let values = flavors.into_iter().join(SEP_AND);
+        let values = flavors.iter().join(SEP_AND);
         self.add_filter("flavor", &values);
         self
     }
@@ -755,7 +755,7 @@ impl CardFilterBuilder {
     where
         T: Display,
     {
-        let values = artists.into_iter().join(SEP_OR);
+        let values = artists.iter().join(SEP_OR);
         self.add_filter("artist", &values);
         self
     }
@@ -796,7 +796,7 @@ impl CardFilterBuilder {
     where
         T: Display,
     {
-        let values = numbers.into_iter().join(SEP_OR);
+        let values = numbers.iter().join(SEP_OR);
         self.add_filter("number", &values);
         self
     }
@@ -837,7 +837,7 @@ impl CardFilterBuilder {
     where
         T: Display,
     {
-        let values = powers.into_iter().join(SEP_OR);
+        let values = powers.iter().join(SEP_OR);
         self.add_filter("power", &values);
         self
     }
@@ -878,7 +878,7 @@ impl CardFilterBuilder {
     where
         T: Display,
     {
-        let values = toughnesses.into_iter().join(SEP_OR);
+        let values = toughnesses.iter().join(SEP_OR);
         self.add_filter("toughness", &values);
         self
     }
@@ -919,7 +919,7 @@ impl CardFilterBuilder {
     where
         T: Display,
     {
-        let values = loyalities.into_iter().join(SEP_OR);
+        let values = loyalities.iter().join(SEP_OR);
         self.add_filter("loyality", &values);
         self
     }
@@ -950,7 +950,7 @@ impl CardFilterBuilder {
     /// ```
     #[allow(dead_code)]
     pub fn game_formats(mut self, formats: &[GameFormat]) -> CardFilterBuilder {
-        let values = formats.into_iter().map(|value| value.as_str()).join(SEP_OR);
+        let values = formats.iter().map(|value| value.as_str()).join(SEP_OR);
         self.add_filter("gameFormat", &values);
         self
     }
@@ -990,7 +990,7 @@ impl CardFilterBuilder {
         formats: &[GameFormat],
         legality: CardLegality,
     ) -> CardFilterBuilder {
-        let values = formats.into_iter().map(|value| value.as_str()).join(SEP_OR);
+        let values = formats.iter().map(|value| value.as_str()).join(SEP_OR);
         self.add_filter("gameFormat", &values);
         self.add_filter("legality", &legality.as_str());
         self
@@ -1003,7 +1003,7 @@ impl CardFilterBuilder {
         if !self.filter.is_empty() {
             self.filter = [&self.filter, "&"].join("");
         }
-        self.filter = self.filter.clone() + &[key, values].into_iter().join("=")
+        self.filter = self.filter.clone() + &[key, values].iter().join("=")
     }
 
     /// Every card with the specified multiverse Id will match the filter
@@ -1042,7 +1042,7 @@ impl CardFilterBuilder {
     where
         T: Display,
     {
-        let values = multiverse_ids.into_iter().join(SEP_OR);
+        let values = multiverse_ids.iter().join(SEP_OR);
         self.add_filter("multiverseid", &values);
         self
     }
@@ -1073,7 +1073,7 @@ impl CardFilterBuilder {
     /// ```
     #[allow(dead_code)]
     pub fn contains_fields(mut self, fields: &[CardResponseField]) -> CardFilterBuilder {
-        let values = fields.into_iter().map(|value| value.as_str()).join(SEP_OR);
+        let values = fields.iter().map(|value| value.as_str()).join(SEP_OR);
         self.add_filter("contains", &values);
         self
     }

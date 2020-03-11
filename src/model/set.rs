@@ -22,7 +22,7 @@ pub(crate) enum SetDto {
         error: String,
     },
     Set {
-        set: SetDetail,
+        set: Box<SetDetail>,
     },
 }
 

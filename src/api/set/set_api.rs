@@ -51,7 +51,7 @@ impl SetApi {
         let mut response = util::send_response(&url, &self.client)?;
         let body = response.text().context(MtgApiErrorKind::BodyReadError)?;
         let set = util::retrieve_set_from_body(&body)?;
-        Ok(ApiResponse::new(set, response.headers()))
+        Ok(ApiResponse::new(*set, response.headers()))
     }
 
     /// Returns a sample booster pack of cards from the specified set
