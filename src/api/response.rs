@@ -12,7 +12,7 @@ pub struct ApiResponse<T> {
 }
 
 impl<T> ApiResponse<T> {
-    pub(crate) fn new(content: T, headers: &HeaderMap) -> ApiResponse<T> {
+    pub(crate) fn new(content: T, headers: HeaderMap) -> ApiResponse<T> {
         let page_size: Option<u32> = if headers.contains_key("Page-Size") { Some(headers.get("Page-Size").unwrap().to_str().expect("Error parsing Page-Size Header").parse::<u32>().expect("Error converting str to u32")) } else { None };
         let count: Option<u32> = if headers.contains_key("Count") { Some(headers.get("Count").unwrap().to_str().expect("Error parsing Count Header").parse::<u32>().expect("Error converting str to u32")) } else { None };
         let total_count: Option<u32> = if headers.contains_key("Total-Count") { Some(headers.get("Total-Count").unwrap().to_str().expect("Error parsing Total-Count Header").parse::<u32>().expect("Error converting str to u32")) } else { None };

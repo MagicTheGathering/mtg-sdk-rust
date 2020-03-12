@@ -33,12 +33,13 @@ impl TypeApi {
 
     /// Returns all types
     #[allow(dead_code)]
-    pub fn all(&self) -> Result<ApiResponse<Vec<String>>, Error> {
+    pub async fn all(&self) -> Result<ApiResponse<Vec<String>>, Error> {
         let url = [&self.url, "/types"].join("");
-        let mut response = util::send_response(&url, &self.client)?;
-        let body = response.text().context(MtgApiErrorKind::BodyReadError)?;
+        let mut response = util::send_response(&url, &self.client).await?;
+        let headers = std::mem::take(response.headers_mut());
+        let body = response.text().await.context(MtgApiErrorKind::BodyReadError)?;
         let types = util::retrieve_types_from_body(&body)?;
-        Ok(ApiResponse::new(types, response.headers()))
+        Ok(ApiResponse::new(types, headers))
     }
 }
 
@@ -49,12 +50,13 @@ impl SubtypeApi {
 
     /// Returns all subtypes
     #[allow(dead_code)]
-    pub fn all(&self) -> Result<ApiResponse<Vec<String>>, Error> {
+    pub async fn all(&self) -> Result<ApiResponse<Vec<String>>, Error> {
         let url = [&self.url, "/subtypes"].join("");
-        let mut response = util::send_response(&url, &self.client)?;
-        let body = response.text().context(MtgApiErrorKind::BodyReadError)?;
+        let mut response = util::send_response(&url, &self.client).await?;
+        let headers = std::mem::take(response.headers_mut());
+        let body = response.text().await.context(MtgApiErrorKind::BodyReadError)?;
         let subtypes = util::retrieve_subtypes_from_body(&body)?;
-        Ok(ApiResponse::new(subtypes, response.headers()))
+        Ok(ApiResponse::new(subtypes, headers))
     }
 }
 
@@ -65,11 +67,12 @@ impl SupertypeApi {
 
     /// Returns all subtypes
     #[allow(dead_code)]
-    pub fn all(&self) -> Result<ApiResponse<Vec<String>>, Error> {
+    pub async fn all(&self) -> Result<ApiResponse<Vec<String>>, Error> {
         let url = [&self.url, "/supertypes"].join("");
-        let mut response = util::send_response(&url, &self.client)?;
-        let body = response.text().context(MtgApiErrorKind::BodyReadError)?;
+        let mut response = util::send_response(&url, &self.client).await?;
+        let headers = std::mem::take(response.headers_mut());
+        let body = response.text().await.context(MtgApiErrorKind::BodyReadError)?;
         let supertypes = util::retrieve_supertypes_from_body(&body)?;
-        Ok(ApiResponse::new(supertypes, response.headers()))
+        Ok(ApiResponse::new(supertypes, headers))
     }
 }
