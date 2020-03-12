@@ -24,46 +24,50 @@ impl SetApi {
 
     /// Returns all Sets
     #[allow(dead_code)]
-    pub fn all(&self) -> Result<ApiResponse<Vec<SetDetail>>, Error> {
+    pub async fn all(&self) -> Result<ApiResponse<Vec<SetDetail>>, Error> {
         let url = [&self.url, "/sets"].join("");
-        let mut response = util::send_response(&url, &self.client)?;
-        let body = response.text().context(MtgApiErrorKind::BodyReadError)?;
+        let mut response = util::send_response(&url, &self.client).await?;
+        let headers = std::mem::take(response.headers_mut());
+        let body = response.text().await.context(MtgApiErrorKind::BodyReadError)?;
         let sets = util::retrieve_sets_from_body(&body)?;
-        Ok(ApiResponse::new(sets, response.headers()))
+        Ok(ApiResponse::new(sets, headers))
     }
 
     /// Returns all sets matching the supplied filter
     #[allow(dead_code)]
-    pub fn all_filtered(&self, filter: SetFilter) -> Result<ApiResponse<Vec<SetDetail>>, Error> {
+    pub async fn all_filtered(&self, filter: SetFilter) -> Result<ApiResponse<Vec<SetDetail>>, Error> {
         let url = SetApi::create_filtered_url(&self.url, filter);
-        let mut response = util::send_response(&url, &self.client)?;
-        let body = response.text().context(MtgApiErrorKind::BodyReadError)?;
+        let mut response = util::send_response(&url, &self.client).await?;
+        let headers = std::mem::take(response.headers_mut());
+        let body = response.text().await.context(MtgApiErrorKind::BodyReadError)?;
         let sets = util::retrieve_sets_from_body(&body)?;
-        Ok(ApiResponse::new(sets, response.headers()))
+        Ok(ApiResponse::new(sets, headers))
     }
 
     /// Returns the specified set by the set code
-    pub fn find<'a, T>(&self, code: T) -> Result<ApiResponse<SetDetail>, Error>
+    pub async fn find<'a, T>(&self, code: T) -> Result<ApiResponse<SetDetail>, Error>
     where
         T: Into<&'a str>,
     {
         let url = [&self.url, "/sets/", code.into()].join("");
-        let mut response = util::send_response(&url, &self.client)?;
-        let body = response.text().context(MtgApiErrorKind::BodyReadError)?;
+        let mut response = util::send_response(&url, &self.client).await?;
+        let headers = std::mem::take(response.headers_mut());
+        let body = response.text().await.context(MtgApiErrorKind::BodyReadError)?;
         let set = util::retrieve_set_from_body(&body)?;
-        Ok(ApiResponse::new(*set, response.headers()))
+        Ok(ApiResponse::new(*set, headers))
     }
 
     /// Returns a sample booster pack of cards from the specified set
-    pub fn booster<'a, T>(&self, code: T) -> Result<ApiResponse<Vec<CardDetail>>, Error>
+    pub async fn booster<'a, T>(&self, code: T) -> Result<ApiResponse<Vec<CardDetail>>, Error>
     where
         T: Into<&'a str>,
     {
         let url = [&self.url, "/sets/", code.into(), "/booster"].join("");
-        let mut response = util::send_response(&url, &self.client)?;
-        let body = response.text().context(MtgApiErrorKind::BodyReadError)?;
+        let mut response = util::send_response(&url, &self.client).await?;
+        let headers = std::mem::take(response.headers_mut());
+        let body = response.text().await.context(MtgApiErrorKind::BodyReadError)?;
         let cards = util::retrieve_cards_from_body(&body)?;
-        Ok(ApiResponse::new(cards, response.headers()))
+        Ok(ApiResponse::new(cards, headers))
     }
 
     fn create_filtered_url(api_url: &str, filter: SetFilter) -> String {

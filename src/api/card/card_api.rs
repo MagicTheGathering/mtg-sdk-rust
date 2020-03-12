@@ -35,12 +35,13 @@ impl CardApi {
     }
 
     /// Returns a specific card by a specific id
-    pub fn find(&self, id: u32) -> Result<ApiResponse<CardDetail>, Error> {
+    pub async fn find(&self, id: u32) -> Result<ApiResponse<CardDetail>, Error> {
         let url = [&self.url, "/cards/", &id.to_string()].join("");
-        let mut response = util::send_response(&url, &self.client)?;
-        let body = response.text().context(MtgApiErrorKind::BodyReadError)?;
+        let mut response = util::send_response(&url, &self.client).await?;
+        let headers = std::mem::take(response.headers_mut());
+        let body = response.text().await.context(MtgApiErrorKind::BodyReadError)?;
         let card = util::retrieve_card_from_body(&body)?;
-        Ok(ApiResponse::new(*card, response.headers()))
+        Ok(ApiResponse::new(*card, headers))
     }
 }
 
@@ -111,14 +112,14 @@ impl AllCardsRequest {
     /// to read the response, it will return an error.
     ///
     #[allow(dead_code)]
-    pub fn next_page(&mut self) -> Result<ApiResponse<Vec<CardDetail>>, Error> {
+    pub async fn next_page(&mut self) -> Result<ApiResponse<Vec<CardDetail>>, Error> {
         let url = self.create_filtered_url();
-        let mut response = util::send_response(&url, &self.client)?;
+        let mut response = util::send_response(&url, &self.client).await?;
         self.page += 1;
-        let headers = response.headers().clone();
-        let body = response.text().context(MtgApiErrorKind::CardBodyParseError)?;
+        let headers = std::mem::take(response.headers_mut());
+        let body = response.text().await.context(MtgApiErrorKind::CardBodyParseError)?;
         let cards = util::retrieve_cards_from_body(&body)?;
-        Ok(ApiResponse::new(cards, &headers))
+        Ok(ApiResponse::new(cards, headers))
     }
 
     /// Sets the ordering of the cards

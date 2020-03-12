@@ -8,13 +8,13 @@ use reqwest::Response;
 use serde_json;
 use std::rc::Weak;
 
-pub(crate) fn send_response(url: &str, client: &Weak<Client>) -> Result<Response, Error> {
+pub(crate) async fn send_response(url: &str, client: &Weak<Client>) -> Result<Response, Error> {
     let client = match client.upgrade() {
         Some(client) => Ok(client),
         None => Err(MtgApiErrorKind::ClientDropped),
     }?;
     info!("GET; {}", &url);
-    Ok(client.get(url).send().context(MtgApiErrorKind::HttpError)?)
+    Ok(client.get(url).send().await?)
 }
 
 pub(crate) fn retrieve_cards_from_body(body: &str) -> Result<Vec<CardDetail>, Error> {
