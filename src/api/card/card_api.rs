@@ -92,12 +92,12 @@ impl AllCardsRequest {
     /// ```no_run
     /// # use std::error::Error;
     /// # use mtgapi_client::prelude::*;
-    /// # fn get_some_Cards() -> Result<(), Box<Error>> {
+    /// # async fn get_some_cards() -> Result<(), Box<dyn Error>> {
     /// let sdk = MtgClient::new(60);
     /// let mut get_cards_request = sdk.cards().all();
     /// let mut cards = Vec::new();
     /// loop {
-    ///     let response = get_cards_request.next_page()?;
+    ///     let response = get_cards_request.next_page().await?;
     ///     if response.content.is_empty() {break}
     ///     cards.extend(response.content);
     /// }
