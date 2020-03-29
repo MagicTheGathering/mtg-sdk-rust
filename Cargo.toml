@@ -1,6 +1,6 @@
 [package]
 name = "mtgapi-client"
-version = "0.1.1"
+version = "0.2.0"
 authors = ["Alexander Wendt <alexwgh1+mtgio@gmail.com>"]
 homepage = "https://github.com/MagicTheGathering/mtg-sdk-rust"
 repository = "https://github.com/MagicTheGathering/mtg-sdk-rust"

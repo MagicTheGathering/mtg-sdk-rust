@@ -41,7 +41,8 @@ get_cards_request.set_page(20);
 let mut cards: Vec<CardDetail> = Vec::new();
 //collect all cards from pages 20 to 25
 for _ in 0..5 {
-    let cards = get_cards_request.next_page()?.content;
+    let response = get_cards_request.next_page().await?
+    let cards = response.content;
     if cards.is_empty() {
         break;
     }
@@ -66,7 +67,8 @@ let mut get_cards_request = api.cards().all_filtered(
 let mut cards: Vec<CardDetail> = Vec::new();
 //collect all cards matching the filter
 loop {
-    let cards = get_cards_request.next_page()?.content;
+    let response = get_cards_request.next_page().await?
+    let cards = response.content;
     if cards.is_empty() {
         break;
     }
@@ -79,26 +81,26 @@ println!("Filtered Cards: {:?}", filtered_cards);
 
 ```
 // Get all sets
-let sets = api.sets().all()?.content;
+let sets = api.sets().all().await?.content;
 println!("All Sets: {:?}", sets);
 
 // Get an example booster pack from the specified set
-let booster_cards = api.sets().booster("ktk")?.content;
+let booster_cards = api.sets().booster("ktk").await?.content;
 println!("Random Cards from Booster: {:?}", booster_cards);
 
 // Get all card types
-let types = api.types().all()?.content;
+let types = api.types().all().await?.content;
 println!("Types: {:?}", types);
 
 // Get all card subtypes
-let subtypes = api.subtypes().all()?.content;
+let subtypes = api.subtypes().all().await?.content;
 println!("Subtypes: {:?}", subtypes);
 
 // Get all card supertypes
-let supertypes = api.supertypes().all()?.content;
+let supertypes = api.supertypes().all().await?.content;
 println!("Supertypes: {:?}", supertypes);
 
 // Get all game formats
-let formats = api.formats().all()?.content;
+let formats = api.formats().all().await?.content;
 println!("Formats: {:?}", formats);
 ```
